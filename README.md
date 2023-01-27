@@ -1,10 +1,12 @@
-# My Personal Project
+# **Gaming Inventory GUI**
 
-## A subtitle
+## Description
 
-A *bulleted* list:
-- item 1
-- item 2
-- item 3
+## User Stories
+### As a user, I want to be able to:
 
-An example of text with **bold** and *italic* fonts.  
+- Open and hide inventory from view
+- Add and remove items from inventory
+- Manually re-order items in inventory
+- Have stackable and non-stackable items
+- Automatically organize inventory 
