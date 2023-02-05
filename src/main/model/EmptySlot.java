@@ -1,11 +1,17 @@
 package model;
 
+// DESCRIPTION
 public class EmptySlot implements Slot {
 
 
     // EFFECTS: constructs an empty slot
     public EmptySlot() {
 
+    }
+
+    @Override
+    public String getName() {
+        return " ";
     }
 
     @Override
@@ -30,7 +36,7 @@ public class EmptySlot implements Slot {
 
     @Override
     public void decreaseStackCount(int amount) {
-
+        // this should never run
     }
 
 }

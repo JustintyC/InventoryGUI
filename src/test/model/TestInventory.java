@@ -82,4 +82,19 @@ class TestInventory {
         assertFalse(inventoryTest.removeItem(4, 5));
     }
 
+    @Test
+    void testTextView() {
+        assertEquals("[ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]", inventoryTest.textView());
+        inventoryTest.insertItem(3, nuke);
+        assertEquals("[ ][ ][ ][Nuke][ ][ ][ ][ ][ ][ ]", inventoryTest.textView());
+        inventoryTest.insertItem(5, skull);
+        inventoryTest.insertItem(5, skull);
+        inventoryTest.insertItem(5, skull);
+        assertEquals("[ ][ ][ ][Nuke][ ][Skull][ ][ ][ ][ ]", inventoryTest.textView());
+        inventoryTest.removeItem(5, 3);
+        inventoryTest.removeItem(3, 1);
+        assertEquals("[ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]", inventoryTest.textView());
+    }
+
+
 }

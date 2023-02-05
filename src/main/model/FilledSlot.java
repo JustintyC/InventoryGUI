@@ -1,5 +1,6 @@
 package model;
 
+// DESCRIPTION
 public class FilledSlot implements Slot {
 
     private String itemName;
@@ -18,6 +19,11 @@ public class FilledSlot implements Slot {
 
 
     public String getItemName() {
+        return itemName;
+    }
+
+    @Override
+    public String getName() {
         return itemName;
     }
 

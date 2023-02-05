@@ -1,6 +1,8 @@
 package model;
 
 public interface Slot {
+    String getName();
+
     int getItemID();
 
     int getStackCount();

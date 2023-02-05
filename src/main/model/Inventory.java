@@ -2,6 +2,7 @@ package model;
 
 import java.util.LinkedList;
 
+// DESCRIPTION
 public class Inventory {
 
     public static final int inventorySize = 10;
@@ -51,6 +52,19 @@ public class Inventory {
             inventory.get(slotNumber).increaseStackCount(insertAmount);
             return true;
         }
+    }
+
+    // EFFECTS: turn an inventory into a readable string
+    // TODO testing
+    public String textView() {
+
+        String inventoryString = new String();
+
+        for (int i = 0; i < this.inventory.size(); i++) {
+            inventoryString = inventoryString + "[" + inventory.get(i).getName() + "]";
+        }
+
+        return inventoryString;
     }
 
     // REQUIRES:  0 >= slotNumber > inventorySize, amount > 0
