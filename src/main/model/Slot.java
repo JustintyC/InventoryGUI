@@ -1,15 +1,18 @@
 package model;
 
-public interface Slot {
-    String getName();
+public abstract class Slot {
 
-    int getItemID();
+    private String itemName;
 
-    int getStackCount();
+    public abstract String getName();
 
-    int getMaxStackSize();
+    public abstract int getItemID();
 
-    void increaseStackCount(int n);
+    public abstract int getStackCount();
 
-    void decreaseStackCount(int amount);
+    public abstract int getMaxStackSize();
+
+    public abstract void increaseStackCount(int n);
+
+    public abstract void decreaseStackCount(int amount);
 }

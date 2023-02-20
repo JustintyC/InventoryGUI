@@ -9,6 +9,8 @@ public class Inventory {
 
     private LinkedList<Slot> inventory;
     private EmptySlot blank = new EmptySlot();
+    ItemBank itemBank = new ItemBank();
+
 
     // REQUIRES: inventorySize > 0
     // EFFECTS: Constructs an empty inventory with size = inventorySize
@@ -54,19 +56,6 @@ public class Inventory {
         }
     }
 
-    // EFFECTS: turn an inventory into a readable string
-    // TODO testing
-    public String textView() {
-
-        String inventoryString = new String();
-
-        for (int i = 0; i < this.inventory.size(); i++) {
-            inventoryString = inventoryString + "[" + inventory.get(i).getName() + "]";
-        }
-
-        return inventoryString;
-    }
-
     // REQUIRES:  0 >= slotNumber > inventorySize, amount > 0
     // MODIFIES: this, inventory.get(slotNumber)
     // EFFECTS: attempts to remove amount number of items from slotNumber^th slot of inventory.
@@ -92,6 +81,26 @@ public class Inventory {
         }
     }
 
+    // EFFECTS: turn an inventory into a readable string
+    public String textView() {
+
+        String inventoryString = new String();
+
+        for (int i = 0; i < this.inventory.size(); i++) {
+            inventoryString = inventoryString + "[" + inventory.get(i).getName() + "]";
+        }
+
+        return inventoryString;
+    }
+
+    // MODIFIES: itemBank
+    // EFFECTS: Creates a new item with a unique ID and adds to itemBank
+    public void createItem(String itemName, int maxStackSize) {
+        int nextID = itemBank.getNextID();
+        itemBank.add(new Item(itemName, nextID, maxStackSize));
+        System.out.println("This item's ID is " + nextID + ".");
+    }
+
     // REQUIRES: 0 >= n > inventorySize
     public Slot getNthSlot(int n) {
         return inventory.get(n);
@@ -103,6 +112,10 @@ public class Inventory {
 
     public int getListSize() {
         return inventory.size();
+    }
+
+    public ItemBank getItemBank() {
+        return itemBank;
     }
 
 }

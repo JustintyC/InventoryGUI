@@ -1,7 +1,7 @@
 package model;
 
 // DESCRIPTION
-public class Item implements Slot {
+public class Item {
 
     private String itemName;
     private int itemID;
@@ -22,34 +22,16 @@ public class Item implements Slot {
         return itemName;
     }
 
-    @Override
-    public String getName() {
-        return itemName;
-    }
-
-    @Override
     public int getItemID() {
         return itemID;
     }
 
-    @Override
     public int getStackCount() {
         return stackCount;
     }
 
-    @Override
     public int getMaxStackSize() {
         return maxStackSize;
-    }
-
-    @Override
-    public void increaseStackCount(int n) {
-
-    }
-
-    @Override
-    public void decreaseStackCount(int amount) {
-
     }
 
 }

@@ -1,7 +1,7 @@
 package model;
 
 // DESCRIPTION
-public class EmptySlot implements Slot {
+public class EmptySlot extends Slot {
 
 
     // EFFECTS: constructs an empty slot

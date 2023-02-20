@@ -1,7 +1,7 @@
 package model;
 
 // DESCRIPTION
-public class FilledSlot implements Slot {
+public class FilledSlot extends Slot {
 
     private String itemName;
     private int itemID;
@@ -9,7 +9,7 @@ public class FilledSlot implements Slot {
     private int maxStackSize;
 
 
-    // EFFECTS: constructs an item with name, ID, stackSize of 1, and size of maximum stack
+    // EFFECTS: constructs an item with name, ID, stackSize, and size of maximum stack
     public FilledSlot(String itemName, int id, int stackCount, int maxStackSize) {
         this.itemName = itemName;
         this.itemID = id;
