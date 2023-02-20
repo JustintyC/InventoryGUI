@@ -101,6 +101,8 @@ public class Inventory {
         System.out.println("This item's ID is " + nextID + ".");
     }
 
+
+
     // REQUIRES: 0 >= n > inventorySize
     public Slot getNthSlot(int n) {
         return inventory.get(n);

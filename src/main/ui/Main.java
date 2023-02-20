@@ -4,7 +4,6 @@ import exceptions.EmptySlotException;
 import exceptions.InvalidItemIDException;
 import model.*;
 
-import java.util.LinkedList;
 import java.util.Scanner;
 
 // DESCRIPTION
@@ -13,6 +12,7 @@ public class Main {
 
     public static void main(String[] args) {
         Inventory inventory = new Inventory();
+        Hand hand = new Hand();
         System.out.println("Available commands: AddItem, RemoveItem, CreateItem, SlotInfo, ViewInventory, Quit");
 
         while (true) {
@@ -25,7 +25,7 @@ public class Main {
                 System.out.println("Quitting...");
                 break;
             } else {
-                handleInput(instruction, inventory);
+                handleInput(instruction, inventory, hand);
             }
 
         }
@@ -33,19 +33,26 @@ public class Main {
 
     // REQUIRES: max stack size input < 0
     // EFFECTS: Produces results according to inputs.
-    private static void handleInput(String input, Inventory inventory) {
+    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
+    private static void handleInput(String input, Inventory inventory, Hand hand) {
         switch (input) {
             case "AddItem":
-                doAddItem(inventory);
+                doAddItem(inventory, hand);
                 break;
             case "RemoveItem":
-                doRemoveItem(inventory);
+                doRemoveItem(inventory, hand);
+                break;
+            case "Hold":
+                doHoldItem(inventory, hand);
+                break;
+            case "Drop":
+                doDropItem(inventory, hand);
                 break;
             case "CreateItem":
-                doCreateItem(inventory);
+                doCreateItem(inventory, hand);
                 break;
             case "SlotInfo":
-                doSlotInfo(inventory);
+                doSlotInfo(inventory, hand);
                 break;
             case "ViewInventory":
                 System.out.println(inventory.textView());
@@ -59,7 +66,7 @@ public class Main {
 
     // MODIFIES: inventory
     // EFFECTS: prompts user and adds an item to inventory
-    private static void doAddItem(Inventory inventory) {
+    private static void doAddItem(Inventory inventory, Hand hand) {
         ItemBank itemBank = inventory.getItemBank();
 
         System.out.println("Please enter slot number to add item into: ");
@@ -82,7 +89,7 @@ public class Main {
 
     // MODIFIES: inventory
     // EFFECTS: prompts user and removes an item from inventory
-    private static void doRemoveItem(Inventory inventory) {
+    private static void doRemoveItem(Inventory inventory, Hand hand) {
         try {
             System.out.println("Please enter slot number to remove item from: ");
             int slotNum = Integer.parseInt(scanner.next()) - 1;
@@ -106,24 +113,48 @@ public class Main {
         }
     }
 
-    // EFFECTS: provides slot info of given slot
-    private static void doSlotInfo(Inventory inventory) {
-        System.out.println("Please enter slot number: ");
+    // MODIFIES: inventory, hand
+    // EFFECTS: prompts user and picks up an item from inventory
+    private static void doHoldItem(Inventory inventory, Hand hand) {
+        System.out.println("Please enter target slot number: ");
         int slotNum = Integer.parseInt(scanner.next()) - 1;
-        Slot slot = inventory.getNthSlot(slotNum);
-        if (slot instanceof EmptySlot) {
-            System.out.println("This slot is empty.");
+        System.out.println("Please enter amount to remove: ");
+        int amount = Integer.parseInt(scanner.next());
+        if (!hand.hold(inventory, slotNum, amount)) {
+            System.out.println("Cannot hold items from targeted slot.");
         } else {
-            System.out.println("Item name: " + slot.getName());
-            System.out.println("Item ID: " + slot.getItemID());
-            System.out.println("Item amount: " + slot.getStackCount());
-            System.out.println("Max stack size: " + slot.getMaxStackSize());
+            System.out.println("You are now holding " + hand.getHeldAmount() + " " + hand.getHand().getName());
+        }
+    }
+
+    // MODIFIES: inventory
+    // EFFECTS: prompts user and drops an item from hand into inventory
+    private static void doDropItem(Inventory inventory, Hand hand) {
+
+    }
+
+    // EFFECTS: provides slot info of given slot
+    private static void doSlotInfo(Inventory inventory, Hand hand) {
+        try {
+            System.out.println("Please enter slot number: ");
+            int slotNum = Integer.parseInt(scanner.next()) - 1;
+            Slot slot = inventory.getNthSlot(slotNum);
+            if (slot instanceof EmptySlot) {
+                System.out.println("This slot is empty.");
+            } else {
+                System.out.println("Item name: " + slot.getName());
+                System.out.println("Item ID: " + slot.getItemID());
+                System.out.println("Item amount: " + slot.getStackCount());
+                System.out.println("Max stack size: " + slot.getMaxStackSize());
+            }
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Invalid slot number.");
         }
     }
 
     // MODIFIES: inventory.itemBank
     // EFFECTS: prompts user and creates a new item
-    private static void doCreateItem(Inventory inventory) {
+    private static void doCreateItem(Inventory inventory, Hand hand) {
         System.out.println("Please enter the item's name: ");
         String name = scanner.next();
         System.out.println("Please enter the item's maximum stack count: ");
