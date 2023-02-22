@@ -17,6 +17,11 @@ public class Item {
         this.maxStackSize = maxStackSize;
     }
 
+    // REQUIRES: maxStackSize >= count > 0
+    // EFFECTS: sets the item's stackCount to given int
+    public void setStackCount(int count) {
+        this.stackCount = count;
+    }
 
     public String getItemName() {
         return itemName;

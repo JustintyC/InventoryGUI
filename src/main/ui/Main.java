@@ -9,15 +9,22 @@ import java.util.Scanner;
 // DESCRIPTION
 public class Main {
     private static Scanner scanner = new Scanner(System.in);
+    static String commandList = "AddItem, RemoveItem, CreateItem, Hold, Drop, SlotInfo, ViewInventory, Quit";
+
 
     public static void main(String[] args) {
         Inventory inventory = new Inventory();
         Hand hand = new Hand();
-        System.out.println("Available commands: AddItem, RemoveItem, CreateItem, SlotInfo, ViewInventory, Quit");
+        System.out.println("Available commands: " + commandList);
+
+
+        inventory.getItemBank().add(new Item("a", 1, 5));
+        inventory.getItemBank().add(new Item("b", 2, 5));
 
         while (true) {
             System.out.println("-------------------------------------");
             System.out.println(inventory.textView());
+            System.out.println(hand.handTextView());
             System.out.println("What would you like to do?");
             String instruction = scanner.next();
 
@@ -58,8 +65,7 @@ public class Main {
                 System.out.println(inventory.textView());
                 break;
             default:
-                System.out.println("Unknown command. Please enter one of: AddItem, RemoveItem, CreateItem, "
-                        + "SlotInfo, ViewInventory, Quit");
+                System.out.println("Unknown command. Please enter one of: " + commandList);
                 break;
         }
     }
@@ -122,15 +128,21 @@ public class Main {
         int amount = Integer.parseInt(scanner.next());
         if (!hand.hold(inventory, slotNum, amount)) {
             System.out.println("Cannot hold items from targeted slot.");
-        } else {
-            System.out.println("You are now holding " + hand.getHeldAmount() + " " + hand.getHand().getName());
         }
     }
 
-    // MODIFIES: inventory
+    // MODIFIES: inventory, hand
     // EFFECTS: prompts user and drops an item from hand into inventory
     private static void doDropItem(Inventory inventory, Hand hand) {
-
+        System.out.println("Please enter target slot number: ");
+        int slotNum = Integer.parseInt(scanner.next()) - 1;
+        System.out.println("Please enter amount to drop: ");
+        int amount = Integer.parseInt(scanner.next());
+        if (!hand.drop(inventory, slotNum, amount)) {
+            System.out.println("Cannot drop items into targeted slot.");
+        } else {
+            System.out.println("Items successfully dropped.");
+        }
     }
 
     // EFFECTS: provides slot info of given slot
@@ -159,7 +171,7 @@ public class Main {
         String name = scanner.next();
         System.out.println("Please enter the item's maximum stack count: ");
         int maxStack = Integer.parseInt(scanner.next());
-        inventory.createItem(name, maxStack);
+        System.out.println(inventory.createItem(name, maxStack));
         System.out.println("Item successfully created.");
     }
 

@@ -17,7 +17,7 @@ public class ItemBank {
 
     // EFFECTS: gets the next item ID that is not taken
     public int getNextID() {
-        int rsf = -1;
+        int rsf = 0;
 
         for (Item item : this.bank) {
             if (item.getItemID() > rsf) {

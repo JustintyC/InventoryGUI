@@ -28,7 +28,7 @@ public class TestItemBank {
 
     @Test
     void testGetNextID() {
-        assertEquals(0, testItemBank.getNextID());
+        assertEquals(1, testItemBank.getNextID());
 
         testItemBank.add(item1);
         testItemBank.add(item2);

@@ -82,12 +82,18 @@ public class Inventory {
     }
 
     // EFFECTS: turn an inventory into a readable string
+    // TODO new testing
     public String textView() {
 
-        String inventoryString = new String();
+        String inventoryString = "";
 
         for (int i = 0; i < this.inventory.size(); i++) {
-            inventoryString = inventoryString + "[" + inventory.get(i).getName() + "]";
+            if (inventory.get(i) instanceof EmptySlot) {
+                inventoryString = inventoryString + "[ ]";
+            } else {
+                inventoryString = inventoryString + "[" + inventory.get(i).getName()
+                        + " " + inventory.get(i).getStackCount() + "x" + "]";
+            }
         }
 
         return inventoryString;
@@ -95,13 +101,18 @@ public class Inventory {
 
     // MODIFIES: itemBank
     // EFFECTS: Creates a new item with a unique ID and adds to itemBank
-    public void createItem(String itemName, int maxStackSize) {
+    public String createItem(String itemName, int maxStackSize) {
         int nextID = itemBank.getNextID();
         itemBank.add(new Item(itemName, nextID, maxStackSize));
-        System.out.println("This item's ID is " + nextID + ".");
+        return "This item's ID is " + nextID + ".";
     }
 
-
+    // REQUIRES: item ID has never been used before, stackCount and maxStackSize > 0, slotNum is within range of list
+    // MODIFIES: this
+    // EFFECTS: sets given slot to a new slot with given information
+    public void setSlot(int slotNum, String itemName, int id, int stackCount, int maxStackSize) {
+        inventory.set(slotNum, new FilledSlot(itemName, id, stackCount, maxStackSize));
+    }
 
     // REQUIRES: 0 >= n > inventorySize
     public Slot getNthSlot(int n) {

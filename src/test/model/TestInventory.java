@@ -20,7 +20,7 @@ class TestInventory {
         inventoryTest = new Inventory();
 
         nuke = new Item("Nuke", 1, 1);
-        ur_mom = new Item("ur mom", 2, 1);
+        ur_mom = new Item("Sword", 2, 1);
         shork = new Item("Shork", 3, 99);
         skull = new Item("Skull", 4, 99);
 
@@ -86,11 +86,11 @@ class TestInventory {
     void testTextView() {
         assertEquals("[ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]", inventoryTest.textView());
         inventoryTest.insertItem(3, nuke);
-        assertEquals("[ ][ ][ ][Nuke][ ][ ][ ][ ][ ][ ]", inventoryTest.textView());
+        assertEquals("[ ][ ][ ][Nuke 1x][ ][ ][ ][ ][ ][ ]", inventoryTest.textView());
         inventoryTest.insertItem(5, skull);
         inventoryTest.insertItem(5, skull);
         inventoryTest.insertItem(5, skull);
-        assertEquals("[ ][ ][ ][Nuke][ ][Skull][ ][ ][ ][ ]", inventoryTest.textView());
+        assertEquals("[ ][ ][ ][Nuke 1x][ ][Skull 3x][ ][ ][ ][ ]", inventoryTest.textView());
         inventoryTest.removeItem(5, 3);
         inventoryTest.removeItem(3, 1);
         assertEquals("[ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]", inventoryTest.textView());
