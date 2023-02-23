@@ -1,5 +1,6 @@
 package model;
 
+import exceptions.InvalidItemIDException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -8,7 +9,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TestItemBank {
+public class ItemBankTest {
 
     ItemBank testItemBank;
     Item item1;
@@ -20,10 +21,10 @@ public class TestItemBank {
     void testSetUp() {
         testItemBank = new ItemBank();
 
-        item1 = new Item("ur mom", 1, 1);
-        item2 = new Item("a", 2, 99);
-        item3 = new Item("natural recursion", 3, 1);
-        item69 = new Item("69", 69, 69);
+        item1 = new Item("item1", 1, 1);
+        item2 = new Item("item2", 2, 99);
+        item3 = new Item("item3", 3, 1);
+        item69 = new Item("item69", 69, 69);
     }
 
     @Test
@@ -53,6 +54,17 @@ public class TestItemBank {
 
         assertEquals(item2, testItemBank.get(1));
         assertEquals(item3, testItemBank.get(2));
+    }
+
+    @Test
+    void testFindItem() throws InvalidItemIDException {
+        testItemBank.add(item1);
+        testItemBank.add(item2);
+        testItemBank.add(item3);
+
+        assertEquals(item1, testItemBank.findItem(1));
+        assertEquals(item2, testItemBank.findItem(2));
+
     }
 
 }

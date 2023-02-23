@@ -2,10 +2,10 @@ package model;
 
 import java.util.LinkedList;
 
-// DESCRIPTION
+// represents the whole inventory
 public class Inventory {
 
-    public static final int inventorySize = 10;
+    private int inventorySize = 10;
 
     private LinkedList<Slot> inventory;
     private EmptySlot blank = new EmptySlot();
@@ -82,7 +82,6 @@ public class Inventory {
     }
 
     // EFFECTS: turn an inventory into a readable string
-    // TODO new testing
     public String textView() {
 
         String inventoryString = "";
@@ -107,6 +106,41 @@ public class Inventory {
         return "This item's ID is " + nextID + ".";
     }
 
+    // REQUIRES: every slot in inventory is legal
+    // EFFECTS: organizes inventory by stacking up as many items as possible to the front of the inventory
+    public void organize() {
+        int length = inventory.size();
+        int slotNum = 0;
+
+        for (Slot slot : inventory) {
+            if (!(slot instanceof EmptySlot)) {
+                String slotName = slot.getName();
+                int slotID = slot.getItemID();
+                int slotStackCount = slot.getStackCount();
+                int slotMaxSize = slot.getMaxStackSize();
+                Item tempItem = new Item(slotName, slotID, slotMaxSize);
+                tempItem.setStackCount(slotStackCount);
+                removeItem(slotNum, slotStackCount);
+
+                for (int i = 0; i < length; i++) {
+                    if (insertItem(i, tempItem)) {
+                        break;
+                    }
+                }
+            }
+            slotNum++;
+
+        }
+    }
+
+    // REQUIRES: size > 0
+    // EFFECTS: adds extra slots to inventory
+    public void addSlots(int size) {
+        for (int i = inventorySize; i < inventorySize + size; i++) {
+            inventory.add(blank);
+        }
+    }
+
     // REQUIRES: item ID has never been used before, stackCount and maxStackSize > 0, slotNum is within range of list
     // MODIFIES: this
     // EFFECTS: sets given slot to a new slot with given information
@@ -117,10 +151,6 @@ public class Inventory {
     // REQUIRES: 0 >= n > inventorySize
     public Slot getNthSlot(int n) {
         return inventory.get(n);
-    }
-
-    public LinkedList<Slot> getInventory() {
-        return inventory;
     }
 
     public int getListSize() {

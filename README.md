@@ -12,8 +12,9 @@ on how to develop their own inventory system.
 ## User Stories
 ### As a user, I want to be able to:
 
-- Open and hide inventory from view
+- Clearly view the inventory
 - Add and remove items from inventory
+- Create new items that can be added into the inventory
 - Manually re-order items in inventory
 - Have stackable and non-stackable items
 - Automatically organize inventory 

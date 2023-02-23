@@ -12,7 +12,7 @@ public class ItemBank {
 
     // EFFECTS: Constructs an empty item bank
     public ItemBank() {
-        bank = new ArrayList<Item>();
+        bank = new ArrayList<>();
     }
 
     // EFFECTS: gets the next item ID that is not taken

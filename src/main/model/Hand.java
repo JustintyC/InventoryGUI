@@ -3,7 +3,7 @@ package model;
 import java.util.LinkedList;
 import java.util.List;
 
-// "selector" that holds an item for the user to move around
+// represents temporary selector that holds an item for the user to move around
 public class Hand {
 
     private Slot hand;
@@ -116,7 +116,6 @@ public class Hand {
     }
 
     // EFFECTS: turns the hand into a readable string
-    // TODO testing
     public String handTextView() {
         if (hand instanceof EmptySlot) {
             return "Hand: [ ]";

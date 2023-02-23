@@ -1,6 +1,6 @@
 package model;
 
-// DESCRIPTION
+// represents an empty slot
 public class EmptySlot extends Slot {
 
 

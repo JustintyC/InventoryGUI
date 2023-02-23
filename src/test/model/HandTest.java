@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class testHand {
+public class HandTest {
 
     Hand testHand;
     Item item1;
@@ -30,6 +30,7 @@ public class testHand {
         // 1 item
         inventoryTest.insertItem(0, item1);
         inventoryTest.insertItem(1, item2);
+        assertFalse(testHand.hold(inventoryTest, 0, 2));
         assertTrue(testHand.hold(inventoryTest, 0, 1));
         assertEquals(testHand.getHand().getItemID(), 1);
         assertEquals(testHand.getHand().getStackCount(), 1);
@@ -197,9 +198,15 @@ public class testHand {
         assertFalse(testHand.drop(inventoryTest, 3, 1));
         assertFalse(testHand.drop(inventoryTest, 3, 2));
         assertTrue(testHand.drop(inventoryTest, 3, 3));
+    }
 
+    @Test
+    void testHandTextView() {
+        assertEquals("Hand: [ ]", testHand.handTextView());
 
-
+        inventoryTest.insertItem(0, item1);
+        testHand.hold(inventoryTest, 0, 1);
+        assertEquals("Hand: [sword 1x]", testHand.handTextView());
     }
 
 
