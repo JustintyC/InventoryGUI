@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class ItemBankTest {
 
@@ -62,8 +63,20 @@ public class ItemBankTest {
         testItemBank.add(item2);
         testItemBank.add(item3);
 
+        try  {
+            assertEquals(item1, testItemBank.findItem(1));
+        } catch (InvalidItemIDException e) {
+            fail();
+        }
         assertEquals(item1, testItemBank.findItem(1));
         assertEquals(item2, testItemBank.findItem(2));
+
+        try {
+            testItemBank.findItem(100000000);
+            fail("There should not be an item with ID of 100000000");
+        } catch (InvalidItemIDException e) {
+
+        }
 
     }
 
