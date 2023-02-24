@@ -122,11 +122,16 @@ public class Inventory {
                 tempItem.setStackCount(slotStackCount);
                 removeItem(slotNum, slotStackCount);
 
-                for (int i = 0; i < length; i++) {
-                    if (insertItem(i, tempItem)) {
-                        break;
-                    }
+                int i = 0;
+                while (!insertItem(i, tempItem)) {
+                    i++;
                 }
+
+                //or (int i = 0; i < length; i++) {
+                //    if (insertItem(i, tempItem)) {
+                //        break;
+                //    }
+                //}
             }
             slotNum++;
 

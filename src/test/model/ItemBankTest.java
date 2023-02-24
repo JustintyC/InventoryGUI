@@ -41,6 +41,19 @@ public class ItemBankTest {
         assertEquals(70, testItemBank.getNextID());
     }
 
+    @Test
+    void testGetNextIDScrambled() {
+        assertEquals(1, testItemBank.getNextID());
+
+        testItemBank.add(item3);
+        testItemBank.add(item2);
+        testItemBank.add(item69);
+        testItemBank.add(item1);
+
+        assertEquals(70, testItemBank.getNextID());
+
+    }
+
 
     @Test
     void testAdd() {
