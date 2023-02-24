@@ -17,11 +17,6 @@ public class FilledSlot extends Slot {
         this.maxStackSize = maxStackSize;
     }
 
-
-    public String getItemName() {
-        return itemName;
-    }
-
     @Override
     public String getName() {
         return itemName;
