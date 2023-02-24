@@ -86,6 +86,16 @@ public class HandTest {
     }
 
     @Test
+    void testHoldTargetAmountVariation() {
+        inventoryTest.insertItem(1, item2);
+        inventoryTest.insertItem(1, item2);
+        assertFalse(testHand.hold(inventoryTest, 1, 3));
+        assertTrue(testHand.hold(inventoryTest, 1, 2));
+        inventoryTest.insertItem(1, item2);
+        assertTrue(testHand.hold(inventoryTest, 1, 1));
+    }
+
+    @Test
     void testDropSingleItem() {
         inventoryTest.insertItem(1, item1);
         testHand.hold(inventoryTest, 1, 1);

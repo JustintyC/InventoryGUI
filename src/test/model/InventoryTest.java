@@ -193,5 +193,11 @@ class InventoryTest {
         assertEquals(5, inventoryTest.getNthSlot(1).getStackCount());
     }
 
+    @Test
+    void testSlotGetNameBecauseJacocoWantsIt() {
+        inventoryTest.insertItem(0, item4);
+        assertEquals("Skull", inventoryTest.getNthSlot(0).getName());
+    }
+
 
 }

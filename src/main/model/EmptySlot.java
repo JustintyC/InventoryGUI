@@ -1,5 +1,7 @@
 package model;
 
+import exceptions.EmptySlotException;
+
 // represents an empty slot
 public class EmptySlot extends Slot {
 
@@ -31,12 +33,10 @@ public class EmptySlot extends Slot {
 
     @Override
     public void increaseStackCount(int n) {
-        // this should never run
     }
 
     @Override
     public void decreaseStackCount(int amount) {
-        // this should never run
     }
 
 }

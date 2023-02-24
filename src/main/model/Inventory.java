@@ -127,11 +127,6 @@ public class Inventory {
                     i++;
                 }
 
-                //or (int i = 0; i < length; i++) {
-                //    if (insertItem(i, tempItem)) {
-                //        break;
-                //    }
-                //}
             }
             slotNum++;
 
