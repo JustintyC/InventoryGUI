@@ -199,5 +199,17 @@ class InventoryTest {
         assertEquals("Skull", inventoryTest.getNthSlot(0).getName());
     }
 
+    @Test
+    void testGetItemBank() {
+        assertEquals(0, inventoryTest.getItemBank().bank.size());
+
+        inventoryTest.createItem("A", 5);
+        assertEquals(1, inventoryTest.getItemBank().bank.size());
+
+        inventoryTest.createItem("B", 56);
+        assertEquals(2, inventoryTest.getItemBank().bank.size());
+
+    }
+
 
 }

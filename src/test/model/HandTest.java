@@ -96,6 +96,20 @@ public class HandTest {
     }
 
     @Test
+    void testHoldThatOneYellowLine43() {
+        // target is not empty
+        // target's stack count is greater than requested amount
+        // target ID doesn't match
+        inventoryTest.insertItem(1, item2);
+        inventoryTest.insertItem(1, item2);
+        inventoryTest.insertItem(1, item2);
+        inventoryTest.insertItem(2, item1);
+        assertTrue(testHand.hold(inventoryTest, 2, 1));
+        assertFalse(testHand.hold(inventoryTest, 1, 2));
+
+    }
+
+    @Test
     void testDropSingleItem() {
         inventoryTest.insertItem(1, item1);
         testHand.hold(inventoryTest, 1, 1);
