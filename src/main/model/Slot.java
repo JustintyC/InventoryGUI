@@ -1,5 +1,6 @@
 package model;
 
+// represents a slot in the inventory
 public abstract class Slot {
 
     private String itemName;

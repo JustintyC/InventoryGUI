@@ -1,6 +1,6 @@
 package model;
 
-// DESCRIPTION
+// represents an item with its name, unique ID, current stack count, and max stack size
 public class Item {
 
     private String itemName;

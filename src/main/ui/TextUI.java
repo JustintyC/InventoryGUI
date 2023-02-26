@@ -9,7 +9,6 @@ import java.util.Scanner;
 public class TextUI {
     private static Scanner scanner = new Scanner(System.in); // Scanner from B04-SimpleCalculatorStaterLecLab
 
-    // REQUIRES: max stack size input < 0
     // EFFECTS: Produces results according to inputs.
     @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
     public static void handleInput(String input, Inventory inventory, Hand hand, String commandList) {
@@ -95,26 +94,35 @@ public class TextUI {
     // MODIFIES: inventory, hand
     // EFFECTS: prompts user and picks up an item from inventory
     private static void doHoldItem(Inventory inventory, Hand hand) {
-        System.out.println("Please enter target slot number: ");
-        int slotNum = Integer.parseInt(scanner.next()) - 1;
-        System.out.println("Please enter amount to remove: ");
-        int amount = Integer.parseInt(scanner.next());
-        if (!hand.hold(inventory, slotNum, amount)) {
-            System.out.println("Cannot hold items from targeted slot.");
+        try {
+            System.out.println("Please enter target slot number: ");
+            int slotNum = Integer.parseInt(scanner.next()) - 1;
+            System.out.println("Please enter amount to remove: ");
+            int amount = Integer.parseInt(scanner.next());
+            if (!hand.hold(inventory, slotNum, amount)) {
+                System.out.println("Cannot hold items from targeted slot.");
+            }
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Invalid slot number.");
         }
     }
 
     // MODIFIES: inventory, hand
     // EFFECTS: prompts user and drops an item from hand into inventory
     private static void doDropItem(Inventory inventory, Hand hand) {
-        System.out.println("Please enter target slot number: ");
-        int slotNum = Integer.parseInt(scanner.next()) - 1;
-        System.out.println("Please enter amount to drop: ");
-        int amount = Integer.parseInt(scanner.next());
-        if (!hand.drop(inventory, slotNum, amount)) {
-            System.out.println("Cannot drop items into targeted slot.");
-        } else {
-            System.out.println("Items successfully dropped.");
+
+        try {
+            System.out.println("Please enter target slot number: ");
+            int slotNum = Integer.parseInt(scanner.next()) - 1;
+            System.out.println("Please enter amount to drop: ");
+            int amount = Integer.parseInt(scanner.next());
+            if (!hand.drop(inventory, slotNum, amount)) {
+                System.out.println("Cannot drop items into targeted slot.");
+            } else {
+                System.out.println("Items successfully dropped.");
+            }
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Invalid slot number.");
         }
     }
 
