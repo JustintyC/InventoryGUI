@@ -3,6 +3,8 @@ package model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import javax.swing.plaf.basic.BasicTextFieldUI;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class HandTest {
@@ -11,6 +13,7 @@ public class HandTest {
     Item item1;
     Item item2;
     Item item3;
+    Item item5;
     Item item69;
     Inventory inventoryTest;
 
@@ -21,6 +24,7 @@ public class HandTest {
         item1 = new Item("sword", 1, 4);
         item2 = new Item("a", 2, 99);
         item3 = new Item("natural recursion", 3, 3);
+        item5 = new Item("5", 5, 5);
         item69 = new Item("69", 69, 69);
         inventoryTest = new Inventory();
     }
@@ -69,6 +73,7 @@ public class HandTest {
         testHand.hold(inventoryTest, 0, 1);
 
         assertFalse(testHand.hold(inventoryTest, 1, 1));
+        assertTrue(testHand.hold(inventoryTest, 0, 1));
     }
 
     @Test
@@ -103,10 +108,257 @@ public class HandTest {
         inventoryTest.insertItem(1, item2);
         inventoryTest.insertItem(1, item2);
         inventoryTest.insertItem(1, item2);
+        inventoryTest.insertItem(2, item69);
+        assertTrue(testHand.hold(inventoryTest, 2, 1));
+
+        assertFalse(testHand.hold(inventoryTest, 1, 0));
+        assertFalse(testHand.hold(inventoryTest, 1, 1));
+        assertFalse(testHand.hold(inventoryTest, 1, 2));
+        assertFalse(testHand.hold(inventoryTest, 1, 3));
+    }
+
+    @Test
+    void testHoldNotEnoughSpaceInHandToHold() {
+        inventoryTest.insertItem(1, item3);
+        inventoryTest.insertItem(1, item3);
+        inventoryTest.insertItem(1, item3);
+        assertTrue(testHand.hold(inventoryTest, 1, 2));
+
+        inventoryTest.insertItem(1, item3);
+        assertFalse(testHand.hold(inventoryTest, 1, 3));
+        assertTrue(testHand.hold(inventoryTest, 1, 1));
+    }
+
+    @Test
+    void testHoldTargetSlotNotEnoughItemsToHold() {
+        inventoryTest.insertItem(1, item3);
+        inventoryTest.insertItem(1, item3);
+        assertFalse(testHand.hold(inventoryTest, 1, 4));
+        assertFalse(testHand.hold(inventoryTest, 1, 3));
+        assertTrue(testHand.hold(inventoryTest, 1, 2));
+        assertFalse(testHand.hold(inventoryTest, 1, 2));
+        assertFalse(testHand.hold(inventoryTest, 1, 1));
+
+    }
+
+    @Test
+    void testHoldTargetItemDifferentFromHandItem() {
+        inventoryTest.insertItem(1, item1);
+        inventoryTest.insertItem(2, item2);
+        testHand.hold(inventoryTest, 1, 1);
+
+        assertFalse(testHand.hold(inventoryTest, 2, 1));
+        inventoryTest.removeItem(2, 1);
         inventoryTest.insertItem(2, item1);
         assertTrue(testHand.hold(inventoryTest, 2, 1));
-        assertFalse(testHand.hold(inventoryTest, 1, 2));
+    }
 
+    @Test
+    void test2HoldThatOneYellowLine43() {
+        // target is empty
+        inventoryTest.insertItem(1, item2);
+        inventoryTest.insertItem(1, item2);
+        inventoryTest.insertItem(1, item2);
+        inventoryTest.insertItem(2, item69);
+        testHand.hold(inventoryTest, 1, 3);
+
+        assertFalse(testHand.hold(inventoryTest, 5, 1));
+    }
+
+    @Test
+    void testHoldAll3FalseHandNotEmpty() {
+        inventoryTest.insertItem(1, item2);
+        inventoryTest.insertItem(1, item2);
+        inventoryTest.insertItem(1, item2);
+        inventoryTest.insertItem(1, item2);
+        inventoryTest.insertItem(1, item2);
+
+        testHand.hold(inventoryTest, 1, 2);
+        assertTrue(testHand.hold(inventoryTest, 1, 2));
+        assertTrue(testHand.hold(inventoryTest, 1, 1));
+    }
+
+    @Test
+    void testHoldFirstFalseHandNotEmpty() {
+        // NOT: target has enough items
+        // ID matches
+        // hand has enough space
+        inventoryTest.insertItem(1, item2);
+        inventoryTest.insertItem(1, item2);
+        inventoryTest.insertItem(1, item2);
+        inventoryTest.insertItem(1, item2);
+        inventoryTest.insertItem(1, item2);
+
+        testHand.hold(inventoryTest, 1, 3);
+        assertFalse(testHand.hold(inventoryTest, 1, 5));
+        assertFalse(testHand.hold(inventoryTest, 1, 4));
+        assertFalse(testHand.hold(inventoryTest, 1, 3));
+        assertTrue(testHand.hold(inventoryTest, 1, 2));
+    }
+
+    @Test
+    void testHoldSecondFalseHandNotEmpty() {
+        // target has enough items
+        // NOT: ID matches
+        // hand has enough space
+        inventoryTest.insertItem(1, item2);
+        inventoryTest.insertItem(1, item2);
+        inventoryTest.insertItem(1, item2);
+        inventoryTest.insertItem(1, item2);
+        inventoryTest.insertItem(1, item2);
+
+        inventoryTest.insertItem(2, item69);
+        inventoryTest.insertItem(2, item69);
+        inventoryTest.insertItem(2, item69);
+        inventoryTest.insertItem(2, item69);
+        inventoryTest.insertItem(2, item69);
+
+        testHand.hold(inventoryTest, 1, 2);
+        assertFalse(testHand.hold(inventoryTest, 2, 1));
+        assertFalse(testHand.hold(inventoryTest, 2, 2));
+        assertFalse(testHand.hold(inventoryTest, 2, 3));
+        assertFalse(testHand.hold(inventoryTest, 2, 4));
+        assertFalse(testHand.hold(inventoryTest, 2, 5));
+
+    }
+
+    @Test
+    void testHoldThirdFalseHandNotEmpty() {
+        // target has enough items
+        // ID matches
+        // NOT: hand has enough space
+        inventoryTest.insertItem(1, item3);
+        inventoryTest.insertItem(1, item3);
+        inventoryTest.insertItem(1, item3);
+        inventoryTest.insertItem(2, item3);
+        inventoryTest.insertItem(2, item3);
+        testHand.hold(inventoryTest, 1, 2);
+
+        assertFalse(testHand.hold(inventoryTest, 2, 2));
+        assertTrue(testHand.hold(inventoryTest, 2, 1));
+        assertFalse(testHand.hold(inventoryTest, 2, 1));
+    }
+
+    @Test
+    void testHoldFirstAndSecondFalseHandNotEmpty() {
+        // NOT: target has enough items
+        // NOT: ID matches
+        // hand has enough space
+        inventoryTest.insertItem(1, item2);
+        inventoryTest.insertItem(1, item2);
+        inventoryTest.insertItem(1, item2);
+        inventoryTest.insertItem(1, item2);
+        inventoryTest.insertItem(1, item2);
+
+        inventoryTest.insertItem(2, item69);
+        inventoryTest.insertItem(2, item69);
+        inventoryTest.insertItem(2, item69);
+        inventoryTest.insertItem(2, item69);
+        inventoryTest.insertItem(2, item69);
+
+        testHand.hold(inventoryTest, 1, 3);
+        assertFalse(testHand.hold(inventoryTest, 2, 6));
+        assertFalse(testHand.hold(inventoryTest, 2, 7));
+        assertFalse(testHand.hold(inventoryTest, 2, 8));
+        assertFalse(testHand.hold(inventoryTest, 2, 5));
+        assertFalse(testHand.hold(inventoryTest, 1, 3));
+
+    }
+
+    @Test
+    void testHoldSecondAndThirdFalseHandNotEmpty() {
+        // target has enough items
+        // NOT: ID matches
+        // NOT: hand has enough space
+        inventoryTest.insertItem(1, item3);
+        inventoryTest.insertItem(1, item3);
+        inventoryTest.insertItem(1, item3);
+
+        inventoryTest.insertItem(2, item69);
+        inventoryTest.insertItem(2, item69);
+        inventoryTest.insertItem(2, item69);
+        inventoryTest.insertItem(2, item69);
+        inventoryTest.insertItem(2, item69);
+
+        testHand.hold(inventoryTest, 1, 2);
+        assertFalse(testHand.hold(inventoryTest, 2, 2));
+        assertFalse(testHand.hold(inventoryTest, 2, 3));
+        assertFalse(testHand.hold(inventoryTest, 2, 4));
+        assertFalse(testHand.hold(inventoryTest, 2, 5));
+
+        assertFalse(testHand.hold(inventoryTest, 2, 1));
+    }
+
+    @Test
+    void testHoldFirstAndThirdFalseHandNotEmpty() {
+        // NOT: target has enough items
+        // ID matches
+        // NOT: hand has enough space
+        inventoryTest.insertItem(1, item5);
+        inventoryTest.insertItem(1, item5);
+        inventoryTest.insertItem(1, item5);
+        inventoryTest.insertItem(1, item5);
+        inventoryTest.insertItem(1, item5);
+
+        inventoryTest.insertItem(2, item5);
+        inventoryTest.insertItem(2, item5);
+        inventoryTest.insertItem(2, item5);
+        inventoryTest.insertItem(2, item5);
+        inventoryTest.insertItem(2, item5);
+
+        testHand.hold(inventoryTest, 1, 4);
+        assertFalse(testHand.hold(inventoryTest, 2, 6));
+        assertFalse(testHand.hold(inventoryTest, 2, 7));
+        assertFalse(testHand.hold(inventoryTest, 2, 8));
+
+        assertFalse(testHand.hold(inventoryTest, 2, 5));
+        assertFalse(testHand.hold(inventoryTest, 2, 4));
+        assertFalse(testHand.hold(inventoryTest, 2, 3));
+        assertFalse(testHand.hold(inventoryTest, 2, 2));
+    }
+
+    @Test
+    void testHoldAllFalseHandNotEmpty() {
+        // NOT: target has enough items
+        // NOT: ID matches
+        // NOT: hand has enough space
+        inventoryTest.insertItem(1, item5);
+        inventoryTest.insertItem(1, item5);
+        inventoryTest.insertItem(1, item5);
+        inventoryTest.insertItem(1, item5);
+        inventoryTest.insertItem(1, item5);
+
+        inventoryTest.insertItem(2, item5);
+        inventoryTest.insertItem(2, item5);
+        inventoryTest.insertItem(2, item5);
+        inventoryTest.insertItem(2, item5);
+        inventoryTest.insertItem(2, item5);
+
+        inventoryTest.insertItem(3, item3);
+        inventoryTest.insertItem(3, item3);
+        inventoryTest.insertItem(3, item3);
+
+        testHand.hold(inventoryTest, 2, 3);
+
+        assertFalse(testHand.hold(inventoryTest, 3, 4));
+        assertFalse(testHand.hold(inventoryTest, 3, 5));
+    }
+
+    @Test
+    void testHoldAllTrueHandNotEmpty() {
+        // target has enough items
+        // ID matches
+        // hand has enough space
+        inventoryTest.insertItem(1, item5);
+        inventoryTest.insertItem(1, item5);
+        inventoryTest.insertItem(1, item5);
+        inventoryTest.insertItem(1, item5);
+        inventoryTest.insertItem(1, item5);
+        testHand.hold(inventoryTest, 1, 1);
+
+        assertTrue(testHand.hold(inventoryTest, 1, 1));
+        assertTrue(testHand.hold(inventoryTest, 1, 2));
+        assertTrue(testHand.hold(inventoryTest, 1, 1));
     }
 
     @Test

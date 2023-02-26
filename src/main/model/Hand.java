@@ -13,7 +13,7 @@ public class Hand {
         this.hand = blank;
     }
 
-    // REQUIRES: hand is empty
+    // REQUIRES: amount > 0
     // MODIFIES: this
     // EFFECTS: adds given amount of an item into hand from inventory:
     //          if targeted slot in inventory is empty, return false
@@ -39,8 +39,7 @@ public class Hand {
                 inventory.removeItem(slotNum, amount);
                 return true;
             }
-        } else if (targetSlot instanceof EmptySlot
-                || targetSlot.getStackCount() < amount
+        } else if (targetSlot.getStackCount() < amount
                 || targetID != hand.getItemID()
                 || hand.getMaxStackSize() - hand.getStackCount() < amount) {
             return false;
@@ -51,7 +50,7 @@ public class Hand {
         }
     }
 
-    // REQUIRES: hand is holding an item
+    // REQUIRES: hand is holding an item, amount > 0
     // MODIFIES: this
     // EFFECTS: puts or swap given amount of an item from hand into given slot in inventory:
     //          if hand is empty, return false (target: empty or filled)
