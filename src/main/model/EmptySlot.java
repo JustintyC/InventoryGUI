@@ -1,7 +1,5 @@
 package model;
 
-import exceptions.EmptySlotException;
-
 // represents an empty slot
 public class EmptySlot extends Slot {
 

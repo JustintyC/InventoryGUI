@@ -1,6 +1,5 @@
 package ui;
 
-import exceptions.EmptySlotException;
 import exceptions.InvalidItemIDException;
 import model.*;
 
@@ -76,22 +75,20 @@ public class TextUI {
             System.out.println("Please enter slot number to remove item from: ");
             int slotNum = Integer.parseInt(scanner.next()) - 1;
             if (inventory.getNthSlot(slotNum) instanceof EmptySlot) {
-                throw new EmptySlotException();
+                System.out.println("This slot is empty!");
             } else {
                 Slot slot = inventory.getNthSlot(slotNum);
                 System.out.println("This slot has " + slot.getStackCount() + " of " + slot.getName());
-            }
-            System.out.println("Please enter amount of this item to remove: ");
-            int amount = Integer.parseInt(scanner.next());
-            if (!inventory.removeItem(slotNum, amount)) {
-                System.out.println("Not enough items to remove!");
-            } else {
-                System.out.println("Item successfully removed.");
+                System.out.println("Please enter amount of this item to remove: ");
+                int amount = Integer.parseInt(scanner.next());
+                if (!inventory.removeItem(slotNum, amount)) {
+                    System.out.println("Not enough items to remove!");
+                } else {
+                    System.out.println("Item successfully removed.");
+                }
             }
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Invalid slot number.");
-        } catch (EmptySlotException e) {
-            System.out.println("This slot is empty!");
         }
     }
 
