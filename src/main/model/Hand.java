@@ -1,8 +1,5 @@
 package model;
 
-import java.util.LinkedList;
-import java.util.List;
-
 // represents temporary selector that holds an item for the user to move around
 public class Hand {
 

@@ -3,10 +3,10 @@ package model;
 // represents an item with its name, unique ID, current stack count, and max stack size
 public class Item {
 
-    private String itemName;
-    private int itemID;
-    private int stackCount;
-    private int maxStackSize;
+    private String itemName; // item's name
+    private int itemID;      // item's unique ID
+    private int stackCount;  // item's current stack count
+    private int maxStackSize;// item's maximum stack count
 
 
     // EFFECTS: constructs an item with name, ID, stackSize of 1, and size of maximum stack

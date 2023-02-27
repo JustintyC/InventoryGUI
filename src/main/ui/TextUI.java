@@ -14,10 +14,10 @@ public class TextUI {
     public static void handleInput(String input, Inventory inventory, Hand hand, String commandList) {
         switch (input) {
             case "AddItem":
-                doAddItem(inventory, hand);
+                doAddItem(inventory);
                 break;
             case "RemoveItem":
-                doRemoveItem(inventory, hand);
+                doRemoveItem(inventory);
                 break;
             case "Hold":
                 doHoldItem(inventory, hand);
@@ -26,10 +26,10 @@ public class TextUI {
                 doDropItem(inventory, hand);
                 break;
             case "CreateItem":
-                doCreateItem(inventory, hand);
+                doCreateItem(inventory);
                 break;
             case "SlotInfo":
-                doSlotInfo(inventory, hand);
+                doSlotInfo(inventory);
                 break;
             case "Organize":
                 inventory.organize();
@@ -46,7 +46,7 @@ public class TextUI {
 
     // MODIFIES: inventory
     // EFFECTS: prompts user and adds an item to inventory
-    private static void doAddItem(Inventory inventory, Hand hand) {
+    private static void doAddItem(Inventory inventory) {
         ItemBank itemBank = inventory.getItemBank();
 
         System.out.println("Please enter slot number to add item into: ");
@@ -69,7 +69,7 @@ public class TextUI {
 
     // MODIFIES: inventory
     // EFFECTS: prompts user and removes an item from inventory
-    private static void doRemoveItem(Inventory inventory, Hand hand) {
+    private static void doRemoveItem(Inventory inventory) {
         try {
             System.out.println("Please enter slot number to remove item from: ");
             int slotNum = Integer.parseInt(scanner.next()) - 1;
@@ -127,7 +127,7 @@ public class TextUI {
     }
 
     // EFFECTS: provides slot info of given slot
-    private static void doSlotInfo(Inventory inventory, Hand hand) {
+    private static void doSlotInfo(Inventory inventory) {
         try {
             System.out.println("Please enter slot number: ");
             int slotNum = Integer.parseInt(scanner.next()) - 1;
@@ -147,7 +147,7 @@ public class TextUI {
 
     // MODIFIES: inventory.itemBank
     // EFFECTS: prompts user and creates a new item
-    private static void doCreateItem(Inventory inventory, Hand hand) {
+    private static void doCreateItem(Inventory inventory) {
         System.out.println("Please enter the item's name: ");
         String name = scanner.next();
         System.out.println("Please enter the item's maximum stack count: ");
