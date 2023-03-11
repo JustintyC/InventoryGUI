@@ -1,9 +1,7 @@
 package persistence;
 
-import model.EmptySlot;
 import model.Inventory;
 import model.Item;
-import model.Slot;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -45,7 +43,7 @@ public class JsonReader {
     private Inventory parseInventory(JSONObject jsonObject) {
         Inventory inventory = new Inventory();
         addSlots(inventory, jsonObject);
-        addItemBank(inventory, jsonObject);
+        setItemBank(inventory, jsonObject);
         return inventory;
     }
 
@@ -61,6 +59,7 @@ public class JsonReader {
         }
     }
 
+    // MODIFIES: inventory
     // EFFECTS: parses JSONObject into item and adds to correct inventory slot; do nothing if JSONObject represents an
     //          empty slot
     private void addSlot(Inventory inventory, JSONObject jsonObject, int position) {
@@ -78,8 +77,20 @@ public class JsonReader {
 
     // MODIFIES: inventory
     // EFFECTS: parses itemBank from JSONObject and sets it as inventory's itemBank
-    // TODO
-    private void addItemBank(Inventory inventory, JSONObject jsonObject) {
+    private void setItemBank(Inventory inventory, JSONObject jsonObject) {
+        JSONArray jsonArray = jsonObject.getJSONArray("itemBank");
+        for (Object json : jsonArray) {
+            JSONObject nextItem = (JSONObject) json;
+            addItem(inventory, nextItem);
+        }
+    }
 
+    // MODIFIES: inventory
+    // EFFECTS: parses item from jsonArray representing itemBank and creating that item into inventory
+    private void addItem(Inventory inventory, JSONObject jsonObject) {
+        String itemName = jsonObject.getString("name");
+        int id = jsonObject.getInt("itemID");
+        int maxStackSize = jsonObject.getInt("maxStackSize");
+        inventory.createSpecificItem(itemName, id, maxStackSize);
     }
 }

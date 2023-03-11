@@ -1,0 +1,78 @@
+{
+    "itemBank": [
+        {
+            "itemID": 1,
+            "stackCount": 1,
+            "maxStackSize": 1,
+            "name": "UBC Card"
+        },
+        {
+            "itemID": 2,
+            "stackCount": 1,
+            "maxStackSize": 5,
+            "name": "Pencil"
+        }
+    ],
+    "inventory": [
+        {
+            "itemID": 1,
+            "stackCount": 1,
+            "maxStackSize": 1,
+            "name": "UBC Card"
+        },
+        {
+            "itemID": 2,
+            "stackCount": 2,
+            "maxStackSize": 5,
+            "name": "Pencil"
+        },
+        {
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
+        },
+        {
+            "itemID": 1,
+            "stackCount": 1,
+            "maxStackSize": 1,
+            "name": "UBC Card"
+        },
+        {
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
+        },
+        {
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
+        },
+        {
+            "itemID": 2,
+            "stackCount": 1,
+            "maxStackSize": 5,
+            "name": "Pencil"
+        },
+        {
+            "itemID": 1,
+            "stackCount": 1,
+            "maxStackSize": 1,
+            "name": "UBC Card"
+        },
+        {
+            "itemID": 2,
+            "stackCount": 5,
+            "maxStackSize": 5,
+            "name": "Pencil"
+        },
+        {
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
+        }
+    ]
+}

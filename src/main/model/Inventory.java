@@ -108,6 +108,13 @@ public class Inventory implements Writable {
         return "This item's ID is " + nextID + ".";
     }
 
+    // REQUIRES: given ID is unique (no other item in itemBank has it)
+    // MODIFIES: itemBank
+    // EFFECTS: Creates a new item with given ID and adds to itemBank
+    public void createSpecificItem(String itemName, int id, int maxStackSize) {
+        itemBank.add(new Item(itemName, id, maxStackSize));
+    }
+
     // REQUIRES: every slot in inventory is legal
     // EFFECTS: organizes inventory by stacking up as many items as possible to the front of the inventory
     public void organize() {

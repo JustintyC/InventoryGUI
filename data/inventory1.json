@@ -1,0 +1,126 @@
+{
+    "itemBank": [
+        {
+            "itemID": 1,
+            "stackCount": 1,
+            "maxStackSize": 1,
+            "name": "UBC Card"
+        },
+        {
+            "itemID": 2,
+            "stackCount": 1,
+            "maxStackSize": 20,
+            "name": "Pencil"
+        },
+        {
+            "itemID": 3,
+            "stackCount": 1,
+            "maxStackSize": 10,
+            "name": "Ball"
+        },
+        {
+            "itemID": 4,
+            "stackCount": 1,
+            "maxStackSize": 1,
+            "name": "Sensible Footwear"
+        },
+        {
+            "itemID": 5,
+            "stackCount": 1,
+            "maxStackSize": 1,
+            "name": "Laptop"
+        },
+        {
+            "itemID": 6,
+            "stackCount": 1,
+            "maxStackSize": 10,
+            "name": "Phone"
+        },
+        {
+            "itemID": 7,
+            "stackCount": 1,
+            "maxStackSize": 5,
+            "name": "Credit Card"
+        },
+        {
+            "itemID": 8,
+            "stackCount": 1,
+            "maxStackSize": 1,
+            "name": "Vodka"
+        },
+        {
+            "itemID": 9,
+            "stackCount": 1,
+            "maxStackSize": 5,
+            "name": "Keys"
+        },
+        {
+            "itemID": 10,
+            "stackCount": 1,
+            "maxStackSize": 20,
+            "name": "Suspicious Papers"
+        }
+    ],
+    "inventory": [
+        {
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
+        },
+        {
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
+        },
+        {
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
+        },
+        {
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
+        },
+        {
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
+        },
+        {
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
+        },
+        {
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
+        },
+        {
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
+        },
+        {
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
+        },
+        {
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
+        }
+    ]
+}

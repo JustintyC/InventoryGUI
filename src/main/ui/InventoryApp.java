@@ -4,9 +4,13 @@ import exceptions.InvalidItemIDException;
 import model.*;
 import persistence.JsonReader;
 import persistence.JsonWriter;
+import ui.uiexceptions.InvalidSaveSlotException;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
+
+import static java.lang.Integer.parseInt;
 
 // inventory text UI that handles inputs and produces corresponding information
 public class InventoryApp {
@@ -15,7 +19,9 @@ public class InventoryApp {
     Hand hand;
 
     // Based on https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
-    private static final String JSON_STORE = "./data/workroom.json";
+    private static final String JSON_STORE1 = "./data/inventory1.json";
+    private static final String JSON_STORE2 = "./data/inventory2.json";
+    private static final String JSON_STORE3 = "./data/inventory3.json";
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
 
@@ -24,15 +30,25 @@ public class InventoryApp {
         inventory = new Inventory();
         hand = new Hand();
         inventory.getItemBank().add(new Item("UBC Card", 1, 1));
-        inventory.getItemBank().add(new Item("Pencil", 2, 5));
-        jsonWriter = new JsonWriter(JSON_STORE);
-        jsonReader = new JsonReader(JSON_STORE);
+        inventory.getItemBank().add(new Item("Pencil", 2, 20));
+        inventory.getItemBank().add(new Item("Ball", 3, 10));
+        inventory.getItemBank().add(new Item("Sensible Footwear", 4, 1));
+        inventory.getItemBank().add(new Item("Laptop", 5, 1));
+        inventory.getItemBank().add(new Item("Phone", 6, 10));
+        inventory.getItemBank().add(new Item("Credit Card", 7, 5));
+        inventory.getItemBank().add(new Item("Vodka", 8, 1));
+        inventory.getItemBank().add(new Item("Keys", 9, 5));
+        inventory.getItemBank().add(new Item("Suspicious Papers", 10, 20));
+
+        jsonWriter = new JsonWriter(JSON_STORE1);
+        jsonReader = new JsonReader(JSON_STORE1);
         runInventoryApp();
     }
 
     // EFFECTS: Initiates an inventory from a video game with console-based user interaction
     private void runInventoryApp() {
-        String commandList = "AddItem, RemoveItem, CreateItem, Hold, Drop, SlotInfo, Organize, ViewInventory, Quit";
+        String commandList = "AddItem, RemoveItem, CreateItem, Hold, Drop, SlotInfo, Organize, ViewInventory, Save, "
+                + "Load, Quit";
         System.out.println("Available commands: " + commandList);
         while (true) {
             System.out.println("-------------------------------------");
@@ -81,10 +97,18 @@ public class InventoryApp {
                 System.out.println(inventory.textView());
                 break;
             case "Save":
-                doSave();
+                try {
+                    doSave();
+                } catch (InvalidSaveSlotException e) {
+                    System.out.println("Invalid save slot.");
+                }
                 break;
             case "Load":
-                doLoad();
+                try {
+                    doLoad();
+                } catch (InvalidSaveSlotException e) {
+                    System.out.println("Invalid save slot.");
+                }
                 break;
             default:
                 System.out.println("Unknown command. Please enter one of: " + commandList);
@@ -98,9 +122,9 @@ public class InventoryApp {
         ItemBank itemBank = inventory.getItemBank();
 
         System.out.println("Please enter slot number to add item into: ");
-        int slot = Integer.parseInt(scanner.next()) - 1;
+        int slot = parseInt(scanner.next()) - 1;
         System.out.println("Please enter item ID of the item you wish to add: ");
-        int id = Integer.parseInt(scanner.next());
+        int id = parseInt(scanner.next());
         try {
             Item item = itemBank.findItem(id);
             if (!inventory.insertItem(slot, item)) {
@@ -120,14 +144,14 @@ public class InventoryApp {
     private void doRemoveItem(Inventory inventory) {
         try {
             System.out.println("Please enter slot number to remove item from: ");
-            int slotNum = Integer.parseInt(scanner.next()) - 1;
+            int slotNum = parseInt(scanner.next()) - 1;
             if (inventory.getNthSlot(slotNum) instanceof EmptySlot) {
                 System.out.println("This slot is empty!");
             } else {
                 Slot slot = inventory.getNthSlot(slotNum);
                 System.out.println("This slot has " + slot.getStackCount() + " of " + slot.getName());
                 System.out.println("Please enter amount of this item to remove: ");
-                int amount = Integer.parseInt(scanner.next());
+                int amount = parseInt(scanner.next());
                 if (!inventory.removeItem(slotNum, amount)) {
                     System.out.println("Not enough items to remove!");
                 } else {
@@ -144,9 +168,9 @@ public class InventoryApp {
     private void doHoldItem(Inventory inventory, Hand hand) {
         try {
             System.out.println("Please enter target slot number: ");
-            int slotNum = Integer.parseInt(scanner.next()) - 1;
+            int slotNum = parseInt(scanner.next()) - 1;
             System.out.println("Please enter amount to remove: ");
-            int amount = Integer.parseInt(scanner.next());
+            int amount = parseInt(scanner.next());
             if (!hand.hold(inventory, slotNum, amount)) {
                 System.out.println("Cannot hold items from targeted slot.");
             }
@@ -161,9 +185,9 @@ public class InventoryApp {
 
         try {
             System.out.println("Please enter target slot number: ");
-            int slotNum = Integer.parseInt(scanner.next()) - 1;
+            int slotNum = parseInt(scanner.next()) - 1;
             System.out.println("Please enter amount to drop: ");
-            int amount = Integer.parseInt(scanner.next());
+            int amount = parseInt(scanner.next());
             if (!hand.drop(inventory, slotNum, amount)) {
                 System.out.println("Cannot drop items into targeted slot.");
             } else {
@@ -178,7 +202,7 @@ public class InventoryApp {
     private void doSlotInfo(Inventory inventory) {
         try {
             System.out.println("Please enter slot number: ");
-            int slotNum = Integer.parseInt(scanner.next()) - 1;
+            int slotNum = parseInt(scanner.next()) - 1;
             Slot slot = inventory.getNthSlot(slotNum);
             if (slot instanceof EmptySlot) {
                 System.out.println("This slot is empty.");
@@ -199,25 +223,62 @@ public class InventoryApp {
         System.out.println("Please enter the item's name: ");
         String name = scanner.next();
         System.out.println("Please enter the item's maximum stack count: ");
-        int maxStack = Integer.parseInt(scanner.next());
+        int maxStack = parseInt(scanner.next());
         System.out.println(inventory.createItem(name, maxStack));
         System.out.println("Item successfully created.");
     }
 
     // EFFECTS: saves current inventory to file
-    private void doSave() {
+    // Based on https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
+    private void doSave() throws InvalidSaveSlotException {
+        System.out.println("Select save slot: [1] [2] [3]");
+        int saveSlotNum = parseInt(scanner.next());
+        switch (saveSlotNum) {
+            case 1:
+                this.jsonWriter = new JsonWriter(JSON_STORE1);
+                break;
+            case 2:
+                this.jsonWriter = new JsonWriter(JSON_STORE2);
+                break;
+            case 3:
+                this.jsonWriter = new JsonWriter(JSON_STORE3);
+                break;
+            default:
+                throw new InvalidSaveSlotException();
+        }
         try {
             jsonWriter.open();
             jsonWriter.write(inventory);
             jsonWriter.close();
-            System.out.println("Saved current inventory to " + JSON_STORE);
+            System.out.println("Saved current inventory to slot " + saveSlotNum + ".");
         } catch (FileNotFoundException e) {
-            System.out.println("Unable to write to file: " + JSON_STORE);
+            System.out.println("Unable to write to file to slot " + saveSlotNum + ".");
         }
     }
 
     // EFFECTS: load inventory from file
-    private void doLoad() {
-
+    // Based on https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
+    private void doLoad() throws InvalidSaveSlotException {
+        System.out.println("Select save slot: [1] [2] [3]");
+        int saveSlotNum = parseInt(scanner.next());
+        switch (saveSlotNum) {
+            case 1:
+                this.jsonReader = new JsonReader(JSON_STORE1);
+                break;
+            case 2:
+                this.jsonReader = new JsonReader(JSON_STORE2);
+                break;
+            case 3:
+                this.jsonReader = new JsonReader(JSON_STORE3);
+                break;
+            default:
+                throw new InvalidSaveSlotException();
+        }
+        try {
+            inventory = jsonReader.read();
+            System.out.println("Loaded inventory from slot " + saveSlotNum + ".");
+        } catch (IOException e) {
+            System.out.println("Unable to read from slot " + saveSlotNum + ".");
+        }
     }
 }
