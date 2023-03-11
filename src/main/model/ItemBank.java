@@ -44,7 +44,7 @@ public class ItemBank {
 
 
     // EFFECTS: returns slots in this inventory as a JSON array
-    // Based on https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
+    // Based on https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo in WorkRoom.thingiesToJson
     public JSONArray toJsonArray() {
         JSONArray jsonArray = new JSONArray();
 

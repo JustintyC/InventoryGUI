@@ -229,7 +229,7 @@ public class InventoryApp {
     }
 
     // EFFECTS: saves current inventory to file
-    // Based on https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
+    // Based on https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo in WorkRoomApp.saveWorkRoom
     private void doSave() throws InvalidSaveSlotException {
         System.out.println("Select save slot: [1] [2] [3]");
         int saveSlotNum = parseInt(scanner.next());
@@ -257,7 +257,7 @@ public class InventoryApp {
     }
 
     // EFFECTS: load inventory from file
-    // Based on https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
+    // Based on https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo in WorkRoomApp.loadWorkRoom
     private void doLoad() throws InvalidSaveSlotException {
         System.out.println("Select save slot: [1] [2] [3]");
         int saveSlotNum = parseInt(scanner.next());

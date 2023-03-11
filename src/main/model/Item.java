@@ -42,6 +42,7 @@ public class Item implements Writable {
         return maxStackSize;
     }
 
+    // Based on https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo in Thingy.toJson
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();

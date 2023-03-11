@@ -1,0 +1,78 @@
+{
+    "itemBank": [
+        {
+            "itemID": 1,
+            "stackCount": 1,
+            "maxStackSize": 5,
+            "name": "item1"
+        },
+        {
+            "itemID": 2,
+            "stackCount": 1,
+            "maxStackSize": 5,
+            "name": "item2"
+        }
+    ],
+    "inventory": [
+        {
+            "itemID": 1,
+            "stackCount": 3,
+            "maxStackSize": 5,
+            "name": "item1"
+        },
+        {
+            "itemID": 2,
+            "stackCount": 2,
+            "maxStackSize": 5,
+            "name": "item2"
+        },
+        {
+            "itemID": 1,
+            "stackCount": 1,
+            "maxStackSize": 5,
+            "name": "item1"
+        },
+        {
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
+        },
+        {
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
+        },
+        {
+            "itemID": 1,
+            "stackCount": 1,
+            "maxStackSize": 5,
+            "name": "item1"
+        },
+        {
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
+        },
+        {
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
+        },
+        {
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
+        },
+        {
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
+        }
+    ]
+}

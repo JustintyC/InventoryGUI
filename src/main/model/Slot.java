@@ -28,6 +28,7 @@ public abstract class Slot implements Writable {
     public void decreaseStackCount(int amount) {
     }
 
+    // Based on https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo in Thingy.toJson
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();

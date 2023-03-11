@@ -101,7 +101,7 @@ public class Inventory implements Writable {
     }
 
     // MODIFIES: itemBank
-    // EFFECTS: Creates a new item with a unique ID and adds to itemBank
+    // EFFECTS: Creates a new item with a unique ID and adds to itemBank, then returns statement with its ID
     public String createItem(String itemName, int maxStackSize) {
         int nextID = itemBank.getNextID();
         itemBank.add(new Item(itemName, nextID, maxStackSize));
@@ -118,7 +118,6 @@ public class Inventory implements Writable {
     // REQUIRES: every slot in inventory is legal
     // EFFECTS: organizes inventory by stacking up as many items as possible to the front of the inventory
     public void organize() {
-        int length = inventory.size();
         int slotNum = 0;
 
         for (Slot slot : inventory) {
@@ -155,7 +154,7 @@ public class Inventory implements Writable {
         inventory.add(slot);
     }
 
-    // Based on https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
+    // Based on https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo in WorkRoom.toJson
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
@@ -165,7 +164,7 @@ public class Inventory implements Writable {
     }
 
     // EFFECTS: returns slots in this inventory as a JSON array
-    // Based on https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
+    // Based on https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo in WorkRoom.thingiesToJson
     private JSONArray slotsToJson() {
         JSONArray jsonArray = new JSONArray();
 
