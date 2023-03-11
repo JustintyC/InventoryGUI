@@ -148,11 +148,6 @@ public class Inventory implements Writable {
         }
     }
 
-    // MODIFIES: this
-    // EFFECTS: adds given slot to end of inventory
-    public void addSlot(Slot slot) {
-        inventory.add(slot);
-    }
 
     // Based on https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo in WorkRoom.toJson
     @Override
