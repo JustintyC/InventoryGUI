@@ -13,10 +13,13 @@ on how to develop their own inventory system.
 ### As a user, I want to be able to:
 
 - Clearly view the inventory
-- *Add and remove items from inventory
-- *Create new items that can be added into the inventory
-- *Manually re-order items in inventory
+- Add and remove items from inventory
+- Create new items that can be added into the inventory
+- Manually re-order items in inventory
 - Have stackable and non-stackable items
-- *Automatically organize inventory 
+- Automatically organize inventory 
+- Load save slots or create a new one
+- Manually save data
+- Option to save or not save data when quitting
 
 TAs please grade the user stories marked with a *

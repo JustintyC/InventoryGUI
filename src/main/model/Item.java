@@ -1,7 +1,10 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
+
 // represents an item with its name, unique ID, current stack count, and max stack size
-public class Item {
+public class Item implements Writable {
 
     private String itemName; // item's name
     private int itemID;      // item's unique ID
@@ -39,4 +42,13 @@ public class Item {
         return maxStackSize;
     }
 
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", getItemName());
+        json.put("itemID", getItemID());
+        json.put("stackCount", getStackCount());
+        json.put("maxStackSize", getMaxStackSize());
+        return json;
+    }
 }

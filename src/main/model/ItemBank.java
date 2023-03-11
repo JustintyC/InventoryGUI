@@ -1,6 +1,9 @@
 package model;
 
 import exceptions.InvalidItemIDException;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +40,21 @@ public class ItemBank {
         }
         throw new InvalidItemIDException();
     }
+
+
+
+    // EFFECTS: returns slots in this inventory as a JSON array
+    // Based on https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
+    public JSONArray toJsonArray() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Item item : bank) {
+            jsonArray.put(item.toJson());
+        }
+
+        return jsonArray;
+    }
+
 
     // REQUIRES: No other item in bank has same ItemID as given item
     // MODIFIES: this

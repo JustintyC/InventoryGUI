@@ -1,28 +1,30 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.LinkedList;
 
 // represents the whole inventory
-public class Inventory {
+public class Inventory implements Writable {
 
     private int inventorySize = 10;
 
     private LinkedList<Slot> inventory;
     private EmptySlot blank = new EmptySlot();
-    ItemBank itemBank = new ItemBank();
+    ItemBank itemBank;
 
 
     // REQUIRES: inventorySize > 0
     // EFFECTS: Constructs an empty inventory with size = inventorySize
     public Inventory() {
         LinkedList<Slot> tempList = new LinkedList<>();
-
         for (int i = 1; i <= inventorySize; i++) {
             tempList.add(blank);
         }
-
         this.inventory = tempList;
-
+        itemBank = new ItemBank();
     }
 
     // REQUIRES: 0 >= slotNumber > inventorySize
@@ -126,20 +128,48 @@ public class Inventory {
                 while (!insertItem(i, tempItem)) {
                     i++;
                 }
-
             }
             slotNum++;
-
         }
     }
 
+    // MODIFIES: this
     // REQUIRES: size > 0
     // EFFECTS: adds extra slots to inventory
-    public void addSlots(int size) {
+    public void increaseSlots(int size) {
         for (int i = inventorySize; i < inventorySize + size; i++) {
             inventory.add(blank);
         }
     }
+
+    // MODIFIES: this
+    // EFFECTS: adds given slot to end of inventory
+    public void addSlot(Slot slot) {
+        inventory.add(slot);
+    }
+
+    // Based on https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("inventory", slotsToJson());
+        json.put("itemBank", itemBank.toJsonArray());
+        return json;
+    }
+
+    // EFFECTS: returns slots in this inventory as a JSON array
+    // Based on https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
+    private JSONArray slotsToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Slot slot : inventory) {
+            jsonArray.put(slot.toJson());
+        }
+
+        return jsonArray;
+    }
+
+
 
     // REQUIRES: item ID has never been used before, stackCount and maxStackSize > 0, slotNum is within range of list
     // MODIFIES: this

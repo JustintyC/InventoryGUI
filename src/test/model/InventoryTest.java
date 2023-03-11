@@ -87,7 +87,7 @@ class InventoryTest {
     @Test
     void testAddSlots() {
         int originalSize = inventorySize;
-        inventoryTest.addSlots(10);
+        inventoryTest.increaseSlots(10);
         assertEquals(10 + originalSize, inventoryTest.getListSize());
     }
 
@@ -104,7 +104,7 @@ class InventoryTest {
         inventoryTest.removeItem(3, 1);
         assertEquals("[ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]", inventoryTest.textView());
 
-        inventoryTest.addSlots(10);
+        inventoryTest.increaseSlots(10);
         assertEquals("[ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]", inventoryTest.textView());
     }
 

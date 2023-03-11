@@ -1,5 +1,7 @@
 package model;
 
+import org.json.JSONObject;
+
 // represents a non-empty slot
 public class FilledSlot extends Slot {
 
@@ -49,5 +51,10 @@ public class FilledSlot extends Slot {
     @Override
     public void decreaseStackCount(int amount) {
         this.stackCount = stackCount - amount;
+    }
+
+    @Override
+    public JSONObject toJson() {
+        return (super.toJson());
     }
 }
