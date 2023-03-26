@@ -59,68 +59,98 @@
             "stackCount": 1,
             "maxStackSize": 20,
             "name": "Suspicious Papers"
+        },
+        {
+            "itemID": 11,
+            "stackCount": 1,
+            "maxStackSize": 1,
+            "name": "Netherite_Sword"
+        },
+        {
+            "itemID": 12,
+            "stackCount": 1,
+            "maxStackSize": 1,
+            "name": "Bow"
+        },
+        {
+            "itemID": 13,
+            "stackCount": 1,
+            "maxStackSize": 1,
+            "name": "Netherite_Pickaxe"
+        },
+        {
+            "itemID": 14,
+            "stackCount": 1,
+            "maxStackSize": 1,
+            "name": "Netherite_Axe"
+        },
+        {
+            "itemID": 15,
+            "stackCount": 1,
+            "maxStackSize": 64,
+            "name": "Golden_Carrot"
         }
     ],
     "inventory": [
         {
-            "itemID": -1,
-            "stackCount": -1,
-            "maxStackSize": -1,
-            "name": " "
+            "itemID": 11,
+            "stackCount": 1,
+            "maxStackSize": 1,
+            "name": "Netherite_Sword"
         },
         {
-            "itemID": -1,
-            "stackCount": -1,
-            "maxStackSize": -1,
-            "name": " "
+            "itemID": 12,
+            "stackCount": 1,
+            "maxStackSize": 1,
+            "name": "Bow"
         },
         {
-            "itemID": -1,
-            "stackCount": -1,
-            "maxStackSize": -1,
-            "name": " "
+            "itemID": 13,
+            "stackCount": 1,
+            "maxStackSize": 1,
+            "name": "Netherite_Pickaxe"
         },
         {
-            "itemID": -1,
-            "stackCount": -1,
-            "maxStackSize": -1,
-            "name": " "
+            "itemID": 14,
+            "stackCount": 1,
+            "maxStackSize": 1,
+            "name": "Netherite_Axe"
         },
         {
-            "itemID": -1,
-            "stackCount": -1,
-            "maxStackSize": -1,
-            "name": " "
+            "itemID": 15,
+            "stackCount": 2,
+            "maxStackSize": 64,
+            "name": "Golden_Carrot"
         },
         {
-            "itemID": -1,
-            "stackCount": -1,
-            "maxStackSize": -1,
-            "name": " "
+            "itemID": 15,
+            "stackCount": 2,
+            "maxStackSize": 64,
+            "name": "Golden_Carrot"
         },
         {
-            "itemID": -1,
-            "stackCount": -1,
-            "maxStackSize": -1,
-            "name": " "
+            "itemID": 15,
+            "stackCount": 4,
+            "maxStackSize": 64,
+            "name": "Golden_Carrot"
         },
         {
-            "itemID": -1,
-            "stackCount": -1,
-            "maxStackSize": -1,
-            "name": " "
+            "itemID": 15,
+            "stackCount": 8,
+            "maxStackSize": 64,
+            "name": "Golden_Carrot"
         },
         {
-            "itemID": -1,
-            "stackCount": -1,
-            "maxStackSize": -1,
-            "name": " "
+            "itemID": 15,
+            "stackCount": 16,
+            "maxStackSize": 64,
+            "name": "Golden_Carrot"
         },
         {
-            "itemID": -1,
-            "stackCount": -1,
-            "maxStackSize": -1,
-            "name": " "
+            "itemID": 15,
+            "stackCount": 32,
+            "maxStackSize": 64,
+            "name": "Golden_Carrot"
         }
     ]
 }

@@ -93,19 +93,23 @@ class InventoryTest {
 
     @Test
     void testTextView() {
-        assertEquals("[ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]", inventoryTest.textView());
+        assertEquals("[ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]",
+                inventoryTest.textView());
         inventoryTest.insertItem(3, item1);
-        assertEquals("[ ][ ][ ][Nuke 1x][ ][ ][ ][ ][ ][ ]", inventoryTest.textView());
+        assertEquals("[ ][ ][ ][Nuke 1x][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]",
+                inventoryTest.textView());
         inventoryTest.insertItem(5, item4);
         inventoryTest.insertItem(5, item4);
         inventoryTest.insertItem(5, item4);
-        assertEquals("[ ][ ][ ][Nuke 1x][ ][Skull 3x][ ][ ][ ][ ]", inventoryTest.textView());
+        assertEquals("[ ][ ][ ][Nuke 1x][ ][Skull 3x][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]",
+                inventoryTest.textView());
         inventoryTest.removeItem(5, 3);
         inventoryTest.removeItem(3, 1);
-        assertEquals("[ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]", inventoryTest.textView());
+        assertEquals("[ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]", inventoryTest.textView());
 
         inventoryTest.increaseSlots(10);
-        assertEquals("[ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]", inventoryTest.textView());
+        assertEquals("[ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]" +
+                "[ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ][ ]", inventoryTest.textView());
     }
 
     @Test

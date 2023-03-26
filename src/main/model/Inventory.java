@@ -9,7 +9,7 @@ import java.util.LinkedList;
 // represents the whole inventory
 public class Inventory implements Writable {
 
-    private int inventorySize = 10;
+    private int inventorySize = 20;
 
     private LinkedList<Slot> inventory;
     private EmptySlot blank = new EmptySlot();

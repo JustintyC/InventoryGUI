@@ -6,17 +6,26 @@ import persistence.JsonReader;
 import persistence.JsonWriter;
 import ui.uiexceptions.InvalidSaveSlotException;
 
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 import static java.lang.Integer.parseInt;
 
 // inventory text UI that handles inputs and produces corresponding information
-public class InventoryApp {
+public class InventoryApp extends JFrame {
     private Scanner scanner = new Scanner(System.in); // Scanner from B04-SimpleCalculatorStaterLecLab
-    Inventory inventory;
-    Hand hand;
+    private Inventory inventory;
+    private Hand hand;
+    private Map<Integer, JButton> buttonMap;
 
     // Based on https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
     private static final String JSON_STORE1 = "./data/inventory1.json";
@@ -25,10 +34,97 @@ public class InventoryApp {
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
 
+    private static final int WIDTH = 800;
+    private static final int HEIGHT = 600;
+    JDesktopPane gameScreen;
+    JInternalFrame inventoryGUI;
+
+
     // EFFECTS: Constructs an instance of inventory and runs application
     public InventoryApp() {
         inventory = new Inventory();
         hand = new Hand();
+        buttonMap = new HashMap();
+        initializeItemBank();
+
+        jsonWriter = new JsonWriter(JSON_STORE1);
+        jsonReader = new JsonReader(JSON_STORE1);
+
+        runGUI();
+        runInventoryApp();
+    }
+
+    // EFFECTS: Initializes GUI
+    // Based on https://github.students.cs.ubc.ca/CPSC210/AlarmSystem
+    private void runGUI() {
+        gameScreen = new JDesktopPane();
+        // gameScreen.addMouseListener(new DesktopFocusAction());
+        inventoryGUI = new JInternalFrame("Inventory", false, false, false, false);
+        inventoryGUI.setLayout(new BorderLayout());
+
+        setContentPane(gameScreen);
+        setTitle("What is the tallest building at UBC");
+        setSize(WIDTH, HEIGHT);
+
+        JPanel buttonPanel = initializeInventoryGUI();
+
+        inventoryGUI.add(buttonPanel);
+
+        inventoryGUI.pack();
+        inventoryGUI.setVisible(true);
+        gameScreen.add(inventoryGUI);
+
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        centreOnScreen();
+        setVisible(true);
+    }
+
+    // EFFECTS: Initiates grid with 20 slots for inventory GUI
+    private JPanel initializeInventoryGUI() {
+        JPanel buttonPanel = new JPanel();
+
+        buttonPanel.setLayout(new GridLayout(4,5));
+        buttonPanel.setVisible(true);
+        buttonPanel.setSize(40, 70);
+
+        int num = 1;
+        for (int i = 0; i < inventory.getListSize(); i++) {
+            String numStr = String.valueOf(num);
+            JButton thisButton = new SlotButton(numStr);
+            buttonPanel.add(thisButton);
+            buttonMap.put(num, thisButton);
+            num++;
+        }
+        updateInventoryGUI();
+        return buttonPanel;
+    }
+
+    // EFFECTS: updates the GUI with its proper icons and stack numbers // TODO
+    private void updateInventoryGUI() {
+        JButton testButton = buttonMap.get(1);
+        URL image = InventoryApp.class.getClassLoader().getResource("gregor.jpg");
+        ImageIcon icon = new ImageIcon(image);
+        testButton.setIcon(icon);
+    }
+
+    // EFFECTS: returns image URL of given slot
+    private String getSlotImgUrl(int i) {
+        int slotID = inventory.getNthSlot(i).getItemID();
+        String url = "id" + slotID + "_icon.jpg";
+        return url;
+    }
+
+    // EFFECTS: Helper to center main application window on desktop
+    // Based on https://github.students.cs.ubc.ca/CPSC210/AlarmSystem
+    private void centreOnScreen() {
+        int width = Toolkit.getDefaultToolkit().getScreenSize().width;
+        int height = Toolkit.getDefaultToolkit().getScreenSize().height;
+        setLocation((width - getWidth()) / 2, (height - getHeight()) / 2);
+    }
+
+
+    // EFFECTS: Initializes preset items for user
+    private void initializeItemBank() {
         inventory.getItemBank().add(new Item("UBC Card", 1, 1));
         inventory.getItemBank().add(new Item("Pencil", 2, 20));
         inventory.getItemBank().add(new Item("Ball", 3, 10));
@@ -39,10 +135,6 @@ public class InventoryApp {
         inventory.getItemBank().add(new Item("Vodka", 8, 1));
         inventory.getItemBank().add(new Item("Keys", 9, 5));
         inventory.getItemBank().add(new Item("Suspicious Papers", 10, 20));
-
-        jsonWriter = new JsonWriter(JSON_STORE1);
-        jsonReader = new JsonReader(JSON_STORE1);
-        runInventoryApp();
     }
 
     // EFFECTS: Initiates an inventory from a video game with console-based user interaction
@@ -228,7 +320,7 @@ public class InventoryApp {
         System.out.println("Item successfully created.");
     }
 
-    // EFFECTS: saves current inventory to file
+    // EFFECTS: saves current inventory to a save slot
     // Based on https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo in WorkRoomApp.saveWorkRoom
     private void doSave() throws InvalidSaveSlotException {
         System.out.println("Select save slot: [1] [2] [3]");
@@ -256,7 +348,7 @@ public class InventoryApp {
         }
     }
 
-    // EFFECTS: load inventory from file
+    // EFFECTS: load inventory from a save slot
     // Based on https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo in WorkRoomApp.loadWorkRoom
     private void doLoad() throws InvalidSaveSlotException {
         System.out.println("Select save slot: [1] [2] [3]");
