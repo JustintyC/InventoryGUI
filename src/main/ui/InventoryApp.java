@@ -6,11 +6,8 @@ import persistence.JsonReader;
 import persistence.JsonWriter;
 import ui.uiexceptions.InvalidSaveSlotException;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
@@ -75,7 +72,7 @@ public class InventoryApp extends JFrame {
         gameScreen.add(inventoryGUI);
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        centreOnScreen();
+        centerOnScreen();
         setVisible(true);
     }
 
@@ -101,22 +98,25 @@ public class InventoryApp extends JFrame {
 
     // EFFECTS: updates the GUI with its proper icons and stack numbers // TODO
     private void updateInventoryGUI() {
-        JButton testButton = buttonMap.get(1);
-        URL image = InventoryApp.class.getClassLoader().getResource("gregor.jpg");
-        ImageIcon icon = new ImageIcon(image);
-        testButton.setIcon(icon);
+        for (int i = 0; i < inventory.getListSize(); i++) {
+            JButton buttonAtI = buttonMap.get(i + 1);
+            String iconURL = getSlotImgUrl(i);
+            URL image = InventoryApp.class.getClassLoader().getResource(iconURL);
+            ImageIcon icon = new ImageIcon(image);
+            buttonAtI.setIcon(icon);
+        }
     }
 
     // EFFECTS: returns image URL of given slot
     private String getSlotImgUrl(int i) {
         int slotID = inventory.getNthSlot(i).getItemID();
-        String url = "id" + slotID + "_icon.jpg";
+        String url = "id" + slotID + "_icon.png";
         return url;
     }
 
     // EFFECTS: Helper to center main application window on desktop
     // Based on https://github.students.cs.ubc.ca/CPSC210/AlarmSystem
-    private void centreOnScreen() {
+    private void centerOnScreen() {
         int width = Toolkit.getDefaultToolkit().getScreenSize().width;
         int height = Toolkit.getDefaultToolkit().getScreenSize().height;
         setLocation((width - getWidth()) / 2, (height - getHeight()) / 2);
@@ -143,6 +143,7 @@ public class InventoryApp extends JFrame {
                 + "Load, Quit";
         System.out.println("Available commands: " + commandList);
         while (true) {
+            updateInventoryGUI();
             System.out.println("-------------------------------------");
             System.out.println(inventory.textView());
             System.out.println(hand.handTextView());

@@ -7,7 +7,7 @@ public class SlotButton extends JButton {
 
     public SlotButton(String name) {
         super(name);
-        setPreferredSize(new Dimension(50, 50));
+        setPreferredSize(new Dimension(100, 100));
     }
 
 }
