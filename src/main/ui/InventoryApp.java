@@ -6,11 +6,13 @@ import persistence.JsonReader;
 import persistence.JsonWriter;
 import ui.uiexceptions.InvalidSaveSlotException;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -55,9 +57,10 @@ public class InventoryApp extends JFrame {
     // Based on https://github.students.cs.ubc.ca/CPSC210/AlarmSystem
     private void runGUI() {
         gameScreen = new JDesktopPane();
-        // gameScreen.addMouseListener(new DesktopFocusAction());
         inventoryGUI = new JInternalFrame("Inventory", false, false, false, false);
         inventoryGUI.setLayout(new BorderLayout());
+        inventoryGUI.setBackground(Color.DARK_GRAY);
+        inventoryGUI.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, Color.LIGHT_GRAY));
 
         setContentPane(gameScreen);
         setTitle("What is the tallest building at UBC");
@@ -67,13 +70,14 @@ public class InventoryApp extends JFrame {
 
         inventoryGUI.add(buttonPanel);
 
-        inventoryGUI.pack();
         inventoryGUI.setVisible(true);
         gameScreen.add(inventoryGUI);
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         centerOnScreen();
         setVisible(true);
+
+        inventoryGUI.pack();
     }
 
     // EFFECTS: Initiates grid with 20 slots for inventory GUI
@@ -86,8 +90,7 @@ public class InventoryApp extends JFrame {
 
         int num = 1;
         for (int i = 0; i < inventory.getListSize(); i++) {
-            String numStr = String.valueOf(num);
-            JButton thisButton = new SlotButton(numStr);
+            JButton thisButton = new SlotButton();
             buttonPanel.add(thisButton);
             buttonMap.put(num, thisButton);
             num++;
@@ -96,21 +99,33 @@ public class InventoryApp extends JFrame {
         return buttonPanel;
     }
 
-    // EFFECTS: updates the GUI with its proper icons and stack numbers // TODO
+    // EFFECTS: updates the GUI with its proper icons and stack numbers
     private void updateInventoryGUI() {
         for (int i = 0; i < inventory.getListSize(); i++) {
             JButton buttonAtI = buttonMap.get(i + 1);
             String iconURL = getSlotImgUrl(i);
-            URL image = InventoryApp.class.getClassLoader().getResource(iconURL);
+
+            BufferedImage image;
+            try {
+                image = ImageIO.read(new File(iconURL));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            assert image != null;
+
             ImageIcon icon = new ImageIcon(image);
             buttonAtI.setIcon(icon);
+            buttonAtI.setText(String.valueOf(inventory.getNthSlot(i).getStackCount()));
         }
     }
+
+
 
     // EFFECTS: returns image URL of given slot
     private String getSlotImgUrl(int i) {
         int slotID = inventory.getNthSlot(i).getItemID();
-        String url = "id" + slotID + "_icon.png";
+        String url = "resources/id" + slotID + "_icon.png";
         return url;
     }
 
