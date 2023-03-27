@@ -120,6 +120,10 @@ public class Hand {
         }
     }
 
+    public Boolean isEmpty() {
+        return (hand instanceof EmptySlot);
+    }
+
     public Slot getHand() {
         return hand;
     }

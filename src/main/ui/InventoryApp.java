@@ -88,12 +88,10 @@ public class InventoryApp extends JFrame {
         buttonPanel.setVisible(true);
         buttonPanel.setSize(40, 70);
 
-        int num = 1;
         for (int i = 0; i < inventory.getListSize(); i++) {
-            JButton thisButton = new SlotButton();
+            JButton thisButton = new SlotButton(this, i);
             buttonPanel.add(thisButton);
-            buttonMap.put(num, thisButton);
-            num++;
+            buttonMap.put(i, thisButton);
         }
         updateInventoryGUI();
         return buttonPanel;
@@ -102,25 +100,67 @@ public class InventoryApp extends JFrame {
     // EFFECTS: updates the GUI with its proper icons and stack numbers
     private void updateInventoryGUI() {
         for (int i = 0; i < inventory.getListSize(); i++) {
-            JButton buttonAtI = buttonMap.get(i + 1);
-            String iconURL = getSlotImgUrl(i);
-
-            BufferedImage image;
-            try {
-                image = ImageIO.read(new File(iconURL));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-            assert image != null;
-
-            ImageIcon icon = new ImageIcon(image);
-            buttonAtI.setIcon(icon);
-            buttonAtI.setText(String.valueOf(inventory.getNthSlot(i).getStackCount()));
+            updateSlotGUI(i);
         }
     }
 
+    // EFFECTS: updates icon of specific slot
+    private void updateSlotGUI(int i) {
+        JButton buttonAtI = buttonMap.get(i);
+        String iconURL = getSlotImgUrl(i);
 
+        BufferedImage image;
+        try {
+            image = ImageIO.read(new File(iconURL));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        assert image != null;
+
+        ImageIcon icon = new ImageIcon(image);
+        buttonAtI.setIcon(icon);
+        buttonAtI.setText(String.valueOf(inventory.getNthSlot(i).getStackCount()));
+    }
+
+
+    // EFFECTS: handles case where user left clicks on slot
+    //          empty hand -> holds full stack
+    //          occupied hand -> drops full stack
+    public void handleLeftClick(int slotNum) {
+        Boolean isTargetEmpty = (inventory.getNthSlot(slotNum) instanceof EmptySlot);
+        int stackCountAtNthSlot = inventory.getNthSlot(slotNum).getStackCount();
+
+        if (hand.isEmpty()) {
+            if (!isTargetEmpty) {
+                hand.hold(inventory, slotNum, stackCountAtNthSlot);
+            }
+        } else {
+            int stackCountHand = hand.getHeldAmount();
+            hand.drop(inventory, slotNum, stackCountHand);
+        }
+
+        updateSlotGUI(slotNum);
+    }
+
+    // EFFECTS: handles case where user right clicks on slot
+    //          empty hand -> holds half stack (1 if target stack = 1)
+    //          occupied hand -> attempts to drop 1 item from hand (nothing will happen if target is occupied)
+    public void handleRightClick(int slotNum) {
+        int stackCountAtNthSlot = inventory.getNthSlot(slotNum).getStackCount();
+
+        if (hand.isEmpty()) {
+            if (stackCountAtNthSlot == 1) {
+                hand.hold(inventory, slotNum, 1);
+            } else {
+                hand.hold(inventory, slotNum, (int) Math.ceil(stackCountAtNthSlot / 2));
+            }
+        } else {
+            hand.drop(inventory, slotNum, 1);
+        }
+
+        updateSlotGUI(slotNum);
+    }
 
     // EFFECTS: returns image URL of given slot
     private String getSlotImgUrl(int i) {
