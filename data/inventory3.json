@@ -63,64 +63,124 @@
     ],
     "inventory": [
         {
-            "itemID": -1,
-            "stackCount": -1,
-            "maxStackSize": -1,
-            "name": " "
-        },
-        {
-            "itemID": -1,
-            "stackCount": -1,
-            "maxStackSize": -1,
-            "name": " "
-        },
-        {
-            "itemID": -1,
-            "stackCount": -1,
-            "maxStackSize": -1,
-            "name": " "
-        },
-        {
-            "itemID": -1,
-            "stackCount": -1,
-            "maxStackSize": -1,
-            "name": " "
-        },
-        {
-            "itemID": 2,
+            "itemID": 7,
             "stackCount": 1,
-            "maxStackSize": 20,
-            "name": "Pencil"
+            "maxStackSize": 5,
+            "name": "Credit Card"
         },
         {
-            "itemID": -1,
-            "stackCount": -1,
-            "maxStackSize": -1,
-            "name": " "
+            "itemID": 7,
+            "stackCount": 1,
+            "maxStackSize": 5,
+            "name": "Credit Card"
         },
         {
-            "itemID": -1,
-            "stackCount": -1,
-            "maxStackSize": -1,
-            "name": " "
+            "itemID": 7,
+            "stackCount": 1,
+            "maxStackSize": 5,
+            "name": "Credit Card"
         },
         {
-            "itemID": -1,
-            "stackCount": -1,
-            "maxStackSize": -1,
-            "name": " "
+            "itemID": 7,
+            "stackCount": 1,
+            "maxStackSize": 5,
+            "name": "Credit Card"
         },
         {
-            "itemID": -1,
-            "stackCount": -1,
-            "maxStackSize": -1,
-            "name": " "
+            "itemID": 7,
+            "stackCount": 1,
+            "maxStackSize": 5,
+            "name": "Credit Card"
         },
         {
-            "itemID": -1,
-            "stackCount": -1,
-            "maxStackSize": -1,
-            "name": " "
+            "itemID": 7,
+            "stackCount": 1,
+            "maxStackSize": 5,
+            "name": "Credit Card"
+        },
+        {
+            "itemID": 7,
+            "stackCount": 1,
+            "maxStackSize": 5,
+            "name": "Credit Card"
+        },
+        {
+            "itemID": 7,
+            "stackCount": 1,
+            "maxStackSize": 5,
+            "name": "Credit Card"
+        },
+        {
+            "itemID": 7,
+            "stackCount": 1,
+            "maxStackSize": 5,
+            "name": "Credit Card"
+        },
+        {
+            "itemID": 7,
+            "stackCount": 1,
+            "maxStackSize": 5,
+            "name": "Credit Card"
+        },
+        {
+            "itemID": 7,
+            "stackCount": 1,
+            "maxStackSize": 5,
+            "name": "Credit Card"
+        },
+        {
+            "itemID": 7,
+            "stackCount": 1,
+            "maxStackSize": 5,
+            "name": "Credit Card"
+        },
+        {
+            "itemID": 7,
+            "stackCount": 1,
+            "maxStackSize": 5,
+            "name": "Credit Card"
+        },
+        {
+            "itemID": 7,
+            "stackCount": 1,
+            "maxStackSize": 5,
+            "name": "Credit Card"
+        },
+        {
+            "itemID": 7,
+            "stackCount": 1,
+            "maxStackSize": 5,
+            "name": "Credit Card"
+        },
+        {
+            "itemID": 7,
+            "stackCount": 1,
+            "maxStackSize": 5,
+            "name": "Credit Card"
+        },
+        {
+            "itemID": 7,
+            "stackCount": 1,
+            "maxStackSize": 5,
+            "name": "Credit Card"
+        },
+        {
+            "itemID": 7,
+            "stackCount": 1,
+            "maxStackSize": 5,
+            "name": "Credit Card"
+        },
+        {
+            "itemID": 7,
+            "stackCount": 1,
+            "maxStackSize": 5,
+            "name": "Credit Card"
+        },
+        {
+            "itemID": 7,
+            "stackCount": 1,
+            "maxStackSize": 5,
+            "name": "Credit Card"
         }
     ]
 }

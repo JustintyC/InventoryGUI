@@ -59,98 +59,128 @@
             "stackCount": 1,
             "maxStackSize": 20,
             "name": "Suspicious Papers"
-        },
-        {
-            "itemID": 11,
-            "stackCount": 1,
-            "maxStackSize": 1,
-            "name": "Netherite_Sword"
-        },
-        {
-            "itemID": 12,
-            "stackCount": 1,
-            "maxStackSize": 1,
-            "name": "Bow"
-        },
-        {
-            "itemID": 13,
-            "stackCount": 1,
-            "maxStackSize": 1,
-            "name": "Netherite_Pickaxe"
-        },
-        {
-            "itemID": 14,
-            "stackCount": 1,
-            "maxStackSize": 1,
-            "name": "Netherite_Axe"
-        },
-        {
-            "itemID": 15,
-            "stackCount": 1,
-            "maxStackSize": 64,
-            "name": "Golden_Carrot"
         }
     ],
     "inventory": [
         {
-            "itemID": 11,
+            "itemID": 1,
             "stackCount": 1,
             "maxStackSize": 1,
-            "name": "Netherite_Sword"
+            "name": "UBC Card"
         },
         {
-            "itemID": 12,
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
+        },
+        {
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
+        },
+        {
+            "itemID": 4,
             "stackCount": 1,
             "maxStackSize": 1,
-            "name": "Bow"
+            "name": "Sensible Footwear"
         },
         {
-            "itemID": 13,
+            "itemID": 5,
             "stackCount": 1,
             "maxStackSize": 1,
-            "name": "Netherite_Pickaxe"
+            "name": "Laptop"
         },
         {
-            "itemID": 14,
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
+        },
+        {
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
+        },
+        {
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
+        },
+        {
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
+        },
+        {
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
+        },
+        {
+            "itemID": 2,
             "stackCount": 1,
-            "maxStackSize": 1,
-            "name": "Netherite_Axe"
+            "maxStackSize": 20,
+            "name": "Pencil"
         },
         {
-            "itemID": 15,
-            "stackCount": 2,
-            "maxStackSize": 64,
-            "name": "Golden_Carrot"
+            "itemID": 3,
+            "stackCount": 1,
+            "maxStackSize": 10,
+            "name": "Ball"
         },
         {
-            "itemID": 15,
-            "stackCount": 2,
-            "maxStackSize": 64,
-            "name": "Golden_Carrot"
+            "itemID": 10,
+            "stackCount": 1,
+            "maxStackSize": 20,
+            "name": "Suspicious Papers"
         },
         {
-            "itemID": 15,
-            "stackCount": 4,
-            "maxStackSize": 64,
-            "name": "Golden_Carrot"
+            "itemID": 10,
+            "stackCount": 1,
+            "maxStackSize": 20,
+            "name": "Suspicious Papers"
         },
         {
-            "itemID": 15,
-            "stackCount": 8,
-            "maxStackSize": 64,
-            "name": "Golden_Carrot"
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
         },
         {
-            "itemID": 15,
-            "stackCount": 16,
-            "maxStackSize": 64,
-            "name": "Golden_Carrot"
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
         },
         {
-            "itemID": 15,
-            "stackCount": 32,
-            "maxStackSize": 64,
-            "name": "Golden_Carrot"
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
+        },
+        {
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
+        },
+        {
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
+        },
+        {
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
         }
     ]
 }

@@ -29,10 +29,8 @@ public class SlotButton extends JButton {
             public void mouseClicked(MouseEvent e) {
                 if (SwingUtilities.isLeftMouseButton(e)) {
                     inventoryApp.handleLeftClick(associatedSlotNum);
-                    System.out.println("Left click " + associatedSlotNum);
                 } else if (SwingUtilities.isRightMouseButton(e)) {
                     inventoryApp.handleRightClick(associatedSlotNum);
-                    System.out.println("Right click " + associatedSlotNum);
                 }
             }
 

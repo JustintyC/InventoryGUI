@@ -120,9 +120,16 @@ public class Hand {
         }
     }
 
+    // EFFECTS: clears hand
+    public void clearHand() {
+        hand = blank;
+    }
+
     public Boolean isEmpty() {
         return (hand instanceof EmptySlot);
     }
+
+
 
     public Slot getHand() {
         return hand;

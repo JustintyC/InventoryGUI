@@ -9,12 +9,15 @@ import ui.uiexceptions.InvalidSaveSlotException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Scanner;
 
 import static java.lang.Integer.parseInt;
@@ -35,8 +38,12 @@ public class InventoryApp extends JFrame {
 
     private static final int WIDTH = 800;
     private static final int HEIGHT = 600;
+    private Boolean isSaving;
     JDesktopPane gameScreen;
     JInternalFrame inventoryGUI;
+    JInternalFrame saveOrLoad;
+    JInternalFrame saveLoadScreen;
+    JMenuBar menuBar;
 
 
     // EFFECTS: Constructs an instance of inventory and runs application
@@ -44,6 +51,7 @@ public class InventoryApp extends JFrame {
         inventory = new Inventory();
         hand = new Hand();
         buttonMap = new HashMap();
+        isSaving = true;
         initializeItemBank();
 
         jsonWriter = new JsonWriter(JSON_STORE1);
@@ -56,22 +64,15 @@ public class InventoryApp extends JFrame {
     // EFFECTS: Initializes GUI
     // Based on https://github.students.cs.ubc.ca/CPSC210/AlarmSystem
     private void runGUI() {
-        gameScreen = new JDesktopPane();
-        inventoryGUI = new JInternalFrame("Inventory", false, false, false, false);
-        inventoryGUI.setLayout(new BorderLayout());
-        inventoryGUI.setBackground(Color.DARK_GRAY);
-        inventoryGUI.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, Color.LIGHT_GRAY));
-
+        gameScreenSetup();
         setContentPane(gameScreen);
-        setTitle("What is the tallest building at UBC");
+        setTitle("A game with inventory");
         setSize(WIDTH, HEIGHT);
 
-        JPanel buttonPanel = initializeInventoryGUI();
-
-        inventoryGUI.add(buttonPanel);
-
-        inventoryGUI.setVisible(true);
-        gameScreen.add(inventoryGUI);
+        pauseScreenSetup();
+        inventoryGuiSetup();
+        buttonsSetup();
+        menuBarSetup();
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         centerOnScreen();
@@ -80,11 +81,243 @@ public class InventoryApp extends JFrame {
         inventoryGUI.pack();
     }
 
+    // EFFECTS: sets up game screen (not the inventory GUI)
+    private void gameScreenSetup() {
+        gameScreen = new JDesktopPane();
+        gameScreen.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    hand.clearHand();
+                }
+            }
+        });
+    }
+
+    // EFFECTS: sets up pause screen for saving and loading
+    public void pauseScreenSetup() {
+        saveOrLoad = new JInternalFrame();
+        saveOrLoad.setSize(375, 150);
+        saveOrLoad.setLayout(new GridLayout(2, 0));
+        saveOrLoad.setLocation(WIDTH / 4, HEIGHT / 4);
+        saveOrLoad.setVisible(false);
+        gameScreen.add(saveOrLoad);
+
+        JPanel saveOrLoadPanel = new JPanel();
+        saveOrLoadPanel.setLayout(new GridLayout());
+        saveOrLoad.add(saveOrLoadPanel, BorderLayout.NORTH);
+
+        JButton saveButton = saveLoadButtonSetup("Save");
+        JButton loadButton = saveLoadButtonSetup("Load");
+
+        saveOrLoadPanel.add(saveButton);
+        saveOrLoadPanel.add(loadButton);
+
+        cancelButtonSetup();
+    }
+
+    // REQUIRES: name is either "Save" or "Load"
+    // EFFECTS: sets up a button on the saving/loading option screen
+    private JButton saveLoadButtonSetup(String name) {
+        JButton thisButton = new JButton(name);
+        thisButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    if (Objects.equals(name, "Load")) {
+                        if (isSaving) {
+                            isSaving = false;
+                        }
+                        saveLoadScreenSetup();
+                    } else if (Objects.equals(name, "Save")) {
+                        if (!isSaving) {
+                            isSaving = true;
+                        }
+                        saveLoadScreenSetup();
+                    }
+                    saveLoadScreen.setVisible(true);
+                    saveOrLoad.setVisible(false);
+                }
+            }
+        });
+        return thisButton;
+    }
+
+    private void saveLoadScreenSetup() {
+        saveLoadScreen = new JInternalFrame();
+        saveLoadScreen.setLayout(new GridLayout());
+        saveLoadScreen.setLocation(WIDTH / 4, HEIGHT / 4);
+        saveLoadScreen.setSize(375, 150);
+        JButton slot1 = new JButton("1");
+        JButton slot2 = new JButton("2");
+        JButton slot3 = new JButton("3");
+        if (isSaving) {
+            makeButtonsSave(slot1, slot2, slot3);
+        } else {
+            makeButtonsLoad(slot1, slot2, slot3);
+        }
+        saveLoadScreen.add(slot1);
+        saveLoadScreen.add(slot2);
+        saveLoadScreen.add(slot3);
+        gameScreen.add(saveLoadScreen);
+    }
+
+
+    private void makeButtonsSave(JButton slot1, JButton slot2, JButton slot3) {
+        slot1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                buttonSave(JSON_STORE1);
+            }
+        });
+        slot2.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                buttonSave(JSON_STORE2);
+            }
+        });
+        slot3.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                buttonSave(JSON_STORE3);
+            }
+        });
+    }
+
+    private void buttonSave(String jsonStore1) {
+        jsonWriter = new JsonWriter(jsonStore1);
+        try {
+            jsonWriter.open();
+            jsonWriter.write(inventory);
+            jsonWriter.close();
+        } catch (FileNotFoundException ex) {
+            throw new RuntimeException();
+        }
+        saveLoadScreen.setVisible(false);
+        inventoryGUI.setVisible(true);
+        menuBar.setVisible(true);
+    }
+
+    private void makeButtonsLoad(JButton slot1, JButton slot2, JButton slot3) {
+        slot1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                buttonLoad(JSON_STORE1);
+            }
+        });
+        slot2.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                buttonLoad(JSON_STORE2);
+            }
+        });
+        slot3.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                buttonLoad(JSON_STORE3);
+            }
+        });
+    }
+
+    private void buttonLoad(String jsonStore1) {
+        jsonReader = new JsonReader(jsonStore1);
+        try {
+            inventory = jsonReader.read();
+        } catch (IOException ex) {
+            throw new RuntimeException();
+        }
+        saveLoadScreen.setVisible(false);
+        inventoryGUI.setVisible(true);
+        menuBar.setVisible(true);
+        updateInventoryGUI();
+    }
+
+    private void cancelButtonSetup() {
+        JPanel saveOrLoadCancel = new JPanel();
+        saveOrLoadCancel.setLayout(new BorderLayout());
+        JButton cancelButton = new JButton("Cancel");
+        cancelButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    saveOrLoad.setVisible(false);
+                    inventoryGUI.setVisible(true);
+                    menuBar.setVisible(true);
+                }
+            }
+        });
+        saveOrLoadCancel.add(cancelButton);
+        saveOrLoad.add(saveOrLoadCancel, BorderLayout.SOUTH);
+    }
+
+    // EFFECTS: sets up menu bar
+    public void menuBarSetup() {
+        menuBar = new JMenuBar();
+        JMenu options = optionsSetUp();
+        JMenu addItemGUI = new JMenu("Spawn Item");
+
+        menuBar.add(options);
+        menuBar.add(addItemGUI);
+        menuBar.setVisible(true);
+        setJMenuBar(menuBar);
+    }
+
+    private JMenu optionsSetUp() {
+        JMenu options = new JMenu("Options");
+        options.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                inventoryGUI.setVisible(false);
+                saveOrLoad.setVisible(true);
+                menuBar.setVisible(false);
+            }
+        });
+        return options;
+    }
+
+    // EFFECTS: sets up buttons ONLY on the inventoryGUI JInternalFrame
+    private void buttonsSetup() {
+        JPanel buttonPanel = initializeInventoryGUI();
+        inventoryGUI.add(buttonPanel, BorderLayout.SOUTH);
+
+        JPanel extraInventoryButtonsPanel = new JPanel();
+        extraInventoryButtonsPanel.setLayout(new GridLayout());
+        organizeButtonSetup(extraInventoryButtonsPanel);
+        inventoryGUI.add(extraInventoryButtonsPanel, BorderLayout.NORTH);
+
+    }
+
+    private void organizeButtonSetup(JPanel extraInventoryButtonsPanel) {
+        JButton organizeButton = new InventoryToolsButton("Organize", 20, 20);
+        organizeButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    inventory.organize();
+                    updateInventoryGUI();
+                }
+            }
+        });
+        extraInventoryButtonsPanel.add(organizeButton);
+    }
+
+    private void inventoryGuiSetup() {
+        inventoryGUI = new JInternalFrame("Inventory", false, false, false, false);
+        inventoryGUI.setLayout(new BorderLayout());
+        inventoryGUI.setSize(375, 320);
+        inventoryGUI.setBackground(Color.DARK_GRAY);
+        inventoryGUI.setForeground(Color.LIGHT_GRAY);
+        inventoryGUI.setBorder(BorderFactory.createMatteBorder(3, 3, 3, 3, Color.LIGHT_GRAY));
+        inventoryGUI.setLocation(WIDTH / 4, HEIGHT / 4 - 30);
+        inventoryGUI.setVisible(true);
+        gameScreen.add(inventoryGUI);
+    }
+
     // EFFECTS: Initiates grid with 20 slots for inventory GUI
     private JPanel initializeInventoryGUI() {
         JPanel buttonPanel = new JPanel();
 
-        buttonPanel.setLayout(new GridLayout(4,5));
+        buttonPanel.setLayout(new GridLayout(0,5));
         buttonPanel.setVisible(true);
         buttonPanel.setSize(40, 70);
 
@@ -93,6 +326,8 @@ public class InventoryApp extends JFrame {
             buttonPanel.add(thisButton);
             buttonMap.put(i, thisButton);
         }
+
+
         updateInventoryGUI();
         return buttonPanel;
     }
@@ -104,6 +339,8 @@ public class InventoryApp extends JFrame {
         }
     }
 
+
+
     // EFFECTS: updates icon of specific slot
     private void updateSlotGUI(int i) {
         JButton buttonAtI = buttonMap.get(i);
@@ -113,7 +350,11 @@ public class InventoryApp extends JFrame {
         try {
             image = ImageIO.read(new File(iconURL));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            try {
+                image = ImageIO.read(new File("data/gregor.jpg"));
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
         }
 
         assert image != null;
@@ -153,7 +394,7 @@ public class InventoryApp extends JFrame {
             if (stackCountAtNthSlot == 1) {
                 hand.hold(inventory, slotNum, 1);
             } else {
-                hand.hold(inventory, slotNum, (int) Math.ceil(stackCountAtNthSlot / 2));
+                hand.hold(inventory, slotNum, (int) Math.floor(stackCountAtNthSlot / 2));
             }
         } else {
             hand.drop(inventory, slotNum, 1);
@@ -165,7 +406,7 @@ public class InventoryApp extends JFrame {
     // EFFECTS: returns image URL of given slot
     private String getSlotImgUrl(int i) {
         int slotID = inventory.getNthSlot(i).getItemID();
-        String url = "resources/id" + slotID + "_icon.png";
+        String url = "data/id" + slotID + "_icon.png";
         return url;
     }
 
