@@ -63,34 +63,28 @@
     ],
     "inventory": [
         {
-            "itemID": 1,
-            "stackCount": 1,
-            "maxStackSize": 1,
-            "name": "UBC Card"
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
         },
         {
-            "itemID": 2,
-            "stackCount": 1,
-            "maxStackSize": 20,
-            "name": "Pencil"
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
         },
         {
-            "itemID": 3,
-            "stackCount": 1,
-            "maxStackSize": 10,
-            "name": "Ball"
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
         },
         {
-            "itemID": 4,
-            "stackCount": 1,
-            "maxStackSize": 1,
-            "name": "Sensible Footwear"
-        },
-        {
-            "itemID": 5,
-            "stackCount": 1,
-            "maxStackSize": 1,
-            "name": "Laptop"
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
         },
         {
             "itemID": -1,
@@ -117,10 +111,16 @@
             "name": " "
         },
         {
-            "itemID": 10,
-            "stackCount": 2,
-            "maxStackSize": 20,
-            "name": "Suspicious Papers"
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
+        },
+        {
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
         },
         {
             "itemID": -1,

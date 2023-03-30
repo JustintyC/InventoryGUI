@@ -58,7 +58,7 @@ public class InventoryApp extends JFrame {
         jsonReader = new JsonReader(JSON_STORE1);
 
         runGUI();
-        runInventoryApp();
+        //runInventoryApp();
     }
 
     // EFFECTS: Initializes GUI
@@ -83,7 +83,20 @@ public class InventoryApp extends JFrame {
 
     // EFFECTS: sets up game screen (not the inventory GUI)
     private void gameScreenSetup() {
-        gameScreen = new JDesktopPane();
+        gameScreen = new JDesktopPane() {
+            // Override the paintComponent method to set the background image
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                try {
+                    BufferedImage img = ImageIO.read(new File("data/background.png"));
+                    // background source: the incredible artistic skills of ChatGPT
+                    g.drawImage(img, 0, 0, getWidth(), getHeight(), null);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
         gameScreen.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -143,6 +156,7 @@ public class InventoryApp extends JFrame {
         return thisButton;
     }
 
+    // EFFECTS: sets up saving/loading screen where user can choose which slot to save/load into
     private void saveLoadScreenSetup() {
         saveLoadScreen = new JInternalFrame();
         saveLoadScreen.setLayout(new GridLayout());
@@ -162,7 +176,7 @@ public class InventoryApp extends JFrame {
         gameScreen.add(saveLoadScreen);
     }
 
-
+    // EFFECTS: makes the 3 buttons on the saving/loading screen save current instance
     private void makeButtonsSave(JButton slot1, JButton slot2, JButton slot3) {
         slot1.addMouseListener(new MouseAdapter() {
             @Override
@@ -184,6 +198,7 @@ public class InventoryApp extends JFrame {
         });
     }
 
+    // EFFECTS: saving function of a save slot button
     private void buttonSave(String jsonStore1) {
         jsonWriter = new JsonWriter(jsonStore1);
         try {
@@ -198,6 +213,7 @@ public class InventoryApp extends JFrame {
         menuBar.setVisible(true);
     }
 
+    // EFFECTS: makes the 3 buttons on the saving/loading screen load requested instance
     private void makeButtonsLoad(JButton slot1, JButton slot2, JButton slot3) {
         slot1.addMouseListener(new MouseAdapter() {
             @Override
@@ -219,6 +235,7 @@ public class InventoryApp extends JFrame {
         });
     }
 
+    // EFFECTS: loading function of a load slot button
     private void buttonLoad(String jsonStore1) {
         jsonReader = new JsonReader(jsonStore1);
         try {
@@ -232,6 +249,7 @@ public class InventoryApp extends JFrame {
         updateInventoryGUI();
     }
 
+    // EFFECTS: sets up cancel button in save/load options screen
     private void cancelButtonSetup() {
         JPanel saveOrLoadCancel = new JPanel();
         saveOrLoadCancel.setLayout(new BorderLayout());
@@ -256,12 +274,94 @@ public class InventoryApp extends JFrame {
         JMenu options = optionsSetUp();
         JMenu addItemGUI = new JMenu("Spawn Item");
 
+        addItemGuiSetup(addItemGUI);
+
         menuBar.add(options);
         menuBar.add(addItemGUI);
         menuBar.setVisible(true);
         setJMenuBar(menuBar);
     }
 
+    // EFFECTS: sets up the window that prompts user to enter an item ID to add an item to inventory
+    private void addItemGuiSetup(JMenu addItemGUI) {
+        addItemGUI.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                JInternalFrame addItemFrame = new JInternalFrame("Add Item");
+                addItemFrame.setLayout(new BorderLayout());
+
+                JTextField inputBox = inputPanelSetup(addItemFrame);
+
+                JPanel buttonPanel = new JPanel();
+                JButton addButton = new JButton("Add");
+                addItemButtonAction(addItemFrame, inputBox, addButton);
+                JButton cancelButton = new JButton("Close");
+                cancelButton.addActionListener(e12 -> addItemFrame.dispose());
+                buttonPanel.add(addButton);
+                buttonPanel.add(cancelButton);
+                addItemFrame.add(buttonPanel, BorderLayout.SOUTH);
+
+                addItemFrame.pack();
+                addItemFrame.setVisible(true);
+                gameScreen.add(addItemFrame);
+            }
+        });
+    }
+
+    // EFFECTS: setups input panel in the addItem GUI
+    private JTextField inputPanelSetup(JInternalFrame addItemFrame) {
+        JPanel inputPanel = new JPanel();
+        inputPanel.setPreferredSize(new Dimension(200, 50));
+        JLabel inputLabel = new JLabel("Enter an item ID:");
+        JTextField inputBox = new JTextField(10);
+        inputPanel.add(inputLabel);
+        inputPanel.add(inputBox);
+        addItemFrame.add(inputPanel, BorderLayout.CENTER);
+        return inputBox;
+    }
+
+    // EFFECTS: functionality of the Add button in the addItem GUI; opens error window if input is not a positive
+    //          nonzero integer
+    private void addItemButtonAction(JInternalFrame addItemFrame, JTextField inputField, JButton addButton) {
+        addButton.addActionListener(e1 -> {
+            String input = inputField.getText();
+            try {
+                int inputInt = Integer.parseInt(input);
+                if (inputInt > 0) {
+                    doAddItemGUI(inputInt, addItemFrame);
+                } else {
+                    JOptionPane.showMessageDialog(addItemFrame, "Please enter a positive nonzero integer.");
+                }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(addItemFrame, "Please enter an integer.");
+            }
+        });
+    }
+
+    // EFFECTS: adds requested item in inventory; opens error window if inventory is full or given ID doesn't exist
+    private void doAddItemGUI(int id, JInternalFrame addItemFrame) {
+        ItemBank itemBank = inventory.getItemBank();
+
+        try {
+            Item item = itemBank.findItem(id);
+            Boolean inserted = false;
+            for (int i = 0; i < inventory.getListSize(); i++) {
+                if (inventory.insertItem(i, item)) {
+                    inserted = true;
+                    updateSlotGUI(i);
+                    break;
+                }
+            }
+            if (!inserted) {
+                JOptionPane.showMessageDialog(addItemFrame, "Inventory full.");
+            }
+        } catch (InvalidItemIDException e) {
+            JOptionPane.showMessageDialog(addItemFrame, "Cannot find item with given item ID.");
+        }
+    }
+
+    // EFFECTS: sets up the save/load options screen
     private JMenu optionsSetUp() {
         JMenu options = new JMenu("Options");
         options.addMouseListener(new MouseAdapter() {
@@ -287,6 +387,7 @@ public class InventoryApp extends JFrame {
 
     }
 
+    // EFFECTS: sets up the organize button so that it organizes the inventory
     private void organizeButtonSetup(JPanel extraInventoryButtonsPanel) {
         JButton organizeButton = new InventoryToolsButton("Organize", 20, 20);
         organizeButton.addMouseListener(new MouseAdapter() {
@@ -301,6 +402,7 @@ public class InventoryApp extends JFrame {
         extraInventoryButtonsPanel.add(organizeButton);
     }
 
+    // EFFECTS: sets up the inventory GUI
     private void inventoryGuiSetup() {
         inventoryGUI = new JInternalFrame("Inventory", false, false, false, false);
         inventoryGUI.setLayout(new BorderLayout());
@@ -327,7 +429,6 @@ public class InventoryApp extends JFrame {
             buttonMap.put(i, thisButton);
         }
 
-
         updateInventoryGUI();
         return buttonPanel;
     }
@@ -338,8 +439,6 @@ public class InventoryApp extends JFrame {
             updateSlotGUI(i);
         }
     }
-
-
 
     // EFFECTS: updates icon of specific slot
     private void updateSlotGUI(int i) {
@@ -363,7 +462,6 @@ public class InventoryApp extends JFrame {
         buttonAtI.setIcon(icon);
         buttonAtI.setText(String.valueOf(inventory.getNthSlot(i).getStackCount()));
     }
-
 
     // EFFECTS: handles case where user left clicks on slot
     //          empty hand -> holds full stack
@@ -410,6 +508,8 @@ public class InventoryApp extends JFrame {
         return url;
     }
 
+
+
     // EFFECTS: Helper to center main application window on desktop
     // Based on https://github.students.cs.ubc.ca/CPSC210/AlarmSystem
     private void centerOnScreen() {
@@ -433,241 +533,240 @@ public class InventoryApp extends JFrame {
         inventory.getItemBank().add(new Item("Suspicious Papers", 10, 20));
     }
 
-    // EFFECTS: Initiates an inventory from a video game with console-based user interaction
-    private void runInventoryApp() {
-        String commandList = "AddItem, RemoveItem, CreateItem, Hold, Drop, SlotInfo, Organize, ViewInventory, Save, "
-                + "Load, Quit";
-        System.out.println("Available commands: " + commandList);
-        while (true) {
-            updateInventoryGUI();
-            System.out.println("-------------------------------------");
-            System.out.println(inventory.textView());
-            System.out.println(hand.handTextView());
-            System.out.println("What would you like to do?");
-            String instruction = scanner.next();
-
-            if (instruction.equals("Quit")) {
-                System.out.println("Quitting...");
-                break;
-            } else {
-                handleInput(instruction, inventory, hand, commandList);
-            }
-        }
-    }
-
-
-    // EFFECTS: Produces results according to inputs.
-    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
-    private void handleInput(String input, Inventory inventory, Hand hand, String commandList) {
-        switch (input) {
-            case "AddItem":
-                doAddItem(inventory);
-                break;
-            case "RemoveItem":
-                doRemoveItem(inventory);
-                break;
-            case "Hold":
-                doHoldItem(inventory, hand);
-                break;
-            case "Drop":
-                doDropItem(inventory, hand);
-                break;
-            case "CreateItem":
-                doCreateItem(inventory);
-                break;
-            case "SlotInfo":
-                doSlotInfo(inventory);
-                break;
-            case "Organize":
-                inventory.organize();
-                System.out.println("Inventory organized.");
-                break;
-            case "ViewInventory":
-                System.out.println(inventory.textView());
-                break;
-            case "Save":
-                try {
-                    doSave();
-                } catch (InvalidSaveSlotException e) {
-                    System.out.println("Invalid save slot.");
-                }
-                break;
-            case "Load":
-                try {
-                    doLoad();
-                } catch (InvalidSaveSlotException e) {
-                    System.out.println("Invalid save slot.");
-                }
-                break;
-            default:
-                System.out.println("Unknown command. Please enter one of: " + commandList);
-                break;
-        }
-    }
-
-    // MODIFIES: inventory
-    // EFFECTS: prompts user and adds an item to inventory
-    private void doAddItem(Inventory inventory) {
-        ItemBank itemBank = inventory.getItemBank();
-
-        System.out.println("Please enter slot number to add item into: ");
-        int slot = parseInt(scanner.next()) - 1;
-        System.out.println("Please enter item ID of the item you wish to add: ");
-        int id = parseInt(scanner.next());
-        try {
-            Item item = itemBank.findItem(id);
-            if (!inventory.insertItem(slot, item)) {
-                System.out.println("Cannot add item to given slot.");
-            } else {
-                System.out.println("Item successfully added.");
-            }
-        } catch (InvalidItemIDException e) {
-            System.out.println("Cannot find item with given item ID.");
-        } catch (IndexOutOfBoundsException e) {
-            System.out.println("Invalid slot number.");
-        }
-    }
-
-    // MODIFIES: inventory
-    // EFFECTS: prompts user and removes an item from inventory
-    private void doRemoveItem(Inventory inventory) {
-        try {
-            System.out.println("Please enter slot number to remove item from: ");
-            int slotNum = parseInt(scanner.next()) - 1;
-            if (inventory.getNthSlot(slotNum) instanceof EmptySlot) {
-                System.out.println("This slot is empty!");
-            } else {
-                Slot slot = inventory.getNthSlot(slotNum);
-                System.out.println("This slot has " + slot.getStackCount() + " of " + slot.getName());
-                System.out.println("Please enter amount of this item to remove: ");
-                int amount = parseInt(scanner.next());
-                if (!inventory.removeItem(slotNum, amount)) {
-                    System.out.println("Not enough items to remove!");
-                } else {
-                    System.out.println("Item successfully removed.");
-                }
-            }
-        } catch (IndexOutOfBoundsException e) {
-            System.out.println("Invalid slot number.");
-        }
-    }
-
-    // MODIFIES: inventory, hand
-    // EFFECTS: prompts user and picks up an item from inventory
-    private void doHoldItem(Inventory inventory, Hand hand) {
-        try {
-            System.out.println("Please enter target slot number: ");
-            int slotNum = parseInt(scanner.next()) - 1;
-            System.out.println("Please enter amount to remove: ");
-            int amount = parseInt(scanner.next());
-            if (!hand.hold(inventory, slotNum, amount)) {
-                System.out.println("Cannot hold items from targeted slot.");
-            }
-        } catch (IndexOutOfBoundsException e) {
-            System.out.println("Invalid slot number.");
-        }
-    }
-
-    // MODIFIES: inventory, hand
-    // EFFECTS: prompts user and drops an item from hand into inventory
-    private void doDropItem(Inventory inventory, Hand hand) {
-
-        try {
-            System.out.println("Please enter target slot number: ");
-            int slotNum = parseInt(scanner.next()) - 1;
-            System.out.println("Please enter amount to drop: ");
-            int amount = parseInt(scanner.next());
-            if (!hand.drop(inventory, slotNum, amount)) {
-                System.out.println("Cannot drop items into targeted slot.");
-            } else {
-                System.out.println("Items successfully dropped.");
-            }
-        } catch (IndexOutOfBoundsException e) {
-            System.out.println("Invalid slot number.");
-        }
-    }
-
-    // EFFECTS: provides slot info of given slot
-    private void doSlotInfo(Inventory inventory) {
-        try {
-            System.out.println("Please enter slot number: ");
-            int slotNum = parseInt(scanner.next()) - 1;
-            Slot slot = inventory.getNthSlot(slotNum);
-            if (slot instanceof EmptySlot) {
-                System.out.println("This slot is empty.");
-            } else {
-                System.out.println("Item name: " + slot.getName());
-                System.out.println("Item ID: " + slot.getItemID());
-                System.out.println("Item amount: " + slot.getStackCount());
-                System.out.println("Max stack size: " + slot.getMaxStackSize());
-            }
-        } catch (IndexOutOfBoundsException e) {
-            System.out.println("Invalid slot number.");
-        }
-    }
-
-    // MODIFIES: inventory.itemBank
-    // EFFECTS: prompts user and creates a new item
-    private void doCreateItem(Inventory inventory) {
-        System.out.println("Please enter the item's name: ");
-        String name = scanner.next();
-        System.out.println("Please enter the item's maximum stack count: ");
-        int maxStack = parseInt(scanner.next());
-        System.out.println(inventory.createItem(name, maxStack));
-        System.out.println("Item successfully created.");
-    }
-
-    // EFFECTS: saves current inventory to a save slot
-    // Based on https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo in WorkRoomApp.saveWorkRoom
-    private void doSave() throws InvalidSaveSlotException {
-        System.out.println("Select save slot: [1] [2] [3]");
-        int saveSlotNum = parseInt(scanner.next());
-        switch (saveSlotNum) {
-            case 1:
-                this.jsonWriter = new JsonWriter(JSON_STORE1);
-                break;
-            case 2:
-                this.jsonWriter = new JsonWriter(JSON_STORE2);
-                break;
-            case 3:
-                this.jsonWriter = new JsonWriter(JSON_STORE3);
-                break;
-            default:
-                throw new InvalidSaveSlotException();
-        }
-        try {
-            jsonWriter.open();
-            jsonWriter.write(inventory);
-            jsonWriter.close();
-            System.out.println("Saved current inventory to slot " + saveSlotNum + ".");
-        } catch (FileNotFoundException e) {
-            System.out.println("Unable to write to file to slot " + saveSlotNum + ".");
-        }
-    }
-
-    // EFFECTS: load inventory from a save slot
-    // Based on https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo in WorkRoomApp.loadWorkRoom
-    private void doLoad() throws InvalidSaveSlotException {
-        System.out.println("Select save slot: [1] [2] [3]");
-        int saveSlotNum = parseInt(scanner.next());
-        switch (saveSlotNum) {
-            case 1:
-                this.jsonReader = new JsonReader(JSON_STORE1);
-                break;
-            case 2:
-                this.jsonReader = new JsonReader(JSON_STORE2);
-                break;
-            case 3:
-                this.jsonReader = new JsonReader(JSON_STORE3);
-                break;
-            default:
-                throw new InvalidSaveSlotException();
-        }
-        try {
-            inventory = jsonReader.read();
-            System.out.println("Loaded inventory from slot " + saveSlotNum + ".");
-        } catch (IOException e) {
-            System.out.println("Unable to read from slot " + saveSlotNum + ".");
-        }
-    }
+//    // EFFECTS: Initiates an inventory from a video game with console-based user interaction
+//    private void runInventoryApp() {
+//        String commandList = "AddItem, RemoveItem, CreateItem, Hold, Drop, SlotInfo, Organize, ViewInventory, Save, "
+//                + "Load, Quit";
+//        System.out.println("Available commands: " + commandList);
+//        while (true) {
+//            updateInventoryGUI();
+//            System.out.println("-------------------------------------");
+//            System.out.println(inventory.textView());
+//            System.out.println(hand.handTextView());
+//            System.out.println("What would you like to do?");
+//            String instruction = scanner.next();
+//
+//            if (instruction.equals("Quit")) {
+//                System.out.println("Quitting...");
+//                break;
+//            } else {
+//                handleInput(instruction, inventory, hand, commandList);
+//            }
+//        }
+//    }
+//
+//    // EFFECTS: Produces results according to inputs.
+//    @SuppressWarnings({"checkstyle:MethodLength", "checkstyle:SuppressWarnings"})
+//    private void handleInput(String input, Inventory inventory, Hand hand, String commandList) {
+//        switch (input) {
+//            case "AddItem":
+//                doAddItem(inventory);
+//                break;
+//            case "RemoveItem":
+//                doRemoveItem(inventory);
+//                break;
+//            case "Hold":
+//                doHoldItem(inventory, hand);
+//                break;
+//            case "Drop":
+//                doDropItem(inventory, hand);
+//                break;
+//            case "CreateItem":
+//                doCreateItem(inventory);
+//                break;
+//            case "SlotInfo":
+//                doSlotInfo(inventory);
+//                break;
+//            case "Organize":
+//                inventory.organize();
+//                System.out.println("Inventory organized.");
+//                break;
+//            case "ViewInventory":
+//                System.out.println(inventory.textView());
+//                break;
+//            case "Save":
+//                try {
+//                    doSave();
+//                } catch (InvalidSaveSlotException e) {
+//                    System.out.println("Invalid save slot.");
+//                }
+//                break;
+//            case "Load":
+//                try {
+//                    doLoad();
+//                } catch (InvalidSaveSlotException e) {
+//                    System.out.println("Invalid save slot.");
+//                }
+//                break;
+//            default:
+//                System.out.println("Unknown command. Please enter one of: " + commandList);
+//                break;
+//        }
+//    }
+//
+//    // MODIFIES: inventory
+//    // EFFECTS: prompts user and adds an item to inventory
+//    private void doAddItem(Inventory inventory) {
+//        ItemBank itemBank = inventory.getItemBank();
+//
+//        System.out.println("Please enter slot number to add item into: ");
+//        int slot = parseInt(scanner.next()) - 1;
+//        System.out.println("Please enter item ID of the item you wish to add: ");
+//        int id = parseInt(scanner.next());
+//        try {
+//            Item item = itemBank.findItem(id);
+//            if (!inventory.insertItem(slot, item)) {
+//                System.out.println("Cannot add item to given slot.");
+//            } else {
+//                System.out.println("Item successfully added.");
+//            }
+//        } catch (InvalidItemIDException e) {
+//            System.out.println("Cannot find item with given item ID.");
+//        } catch (IndexOutOfBoundsException e) {
+//            System.out.println("Invalid slot number.");
+//        }
+//    }
+//
+//    // MODIFIES: inventory
+//    // EFFECTS: prompts user and removes an item from inventory
+//    private void doRemoveItem(Inventory inventory) {
+//        try {
+//            System.out.println("Please enter slot number to remove item from: ");
+//            int slotNum = parseInt(scanner.next()) - 1;
+//            if (inventory.getNthSlot(slotNum) instanceof EmptySlot) {
+//                System.out.println("This slot is empty!");
+//            } else {
+//                Slot slot = inventory.getNthSlot(slotNum);
+//                System.out.println("This slot has " + slot.getStackCount() + " of " + slot.getName());
+//                System.out.println("Please enter amount of this item to remove: ");
+//                int amount = parseInt(scanner.next());
+//                if (!inventory.removeItem(slotNum, amount)) {
+//                    System.out.println("Not enough items to remove!");
+//                } else {
+//                    System.out.println("Item successfully removed.");
+//                }
+//            }
+//        } catch (IndexOutOfBoundsException e) {
+//            System.out.println("Invalid slot number.");
+//        }
+//    }
+//
+//    // MODIFIES: inventory, hand
+//    // EFFECTS: prompts user and picks up an item from inventory
+//    private void doHoldItem(Inventory inventory, Hand hand) {
+//        try {
+//            System.out.println("Please enter target slot number: ");
+//            int slotNum = parseInt(scanner.next()) - 1;
+//            System.out.println("Please enter amount to remove: ");
+//            int amount = parseInt(scanner.next());
+//            if (!hand.hold(inventory, slotNum, amount)) {
+//                System.out.println("Cannot hold items from targeted slot.");
+//            }
+//        } catch (IndexOutOfBoundsException e) {
+//            System.out.println("Invalid slot number.");
+//        }
+//    }
+//
+//    // MODIFIES: inventory, hand
+//    // EFFECTS: prompts user and drops an item from hand into inventory
+//    private void doDropItem(Inventory inventory, Hand hand) {
+//
+//        try {
+//            System.out.println("Please enter target slot number: ");
+//            int slotNum = parseInt(scanner.next()) - 1;
+//            System.out.println("Please enter amount to drop: ");
+//            int amount = parseInt(scanner.next());
+//            if (!hand.drop(inventory, slotNum, amount)) {
+//                System.out.println("Cannot drop items into targeted slot.");
+//            } else {
+//                System.out.println("Items successfully dropped.");
+//            }
+//        } catch (IndexOutOfBoundsException e) {
+//            System.out.println("Invalid slot number.");
+//        }
+//    }
+//
+//    // EFFECTS: provides slot info of given slot
+//    private void doSlotInfo(Inventory inventory) {
+//        try {
+//            System.out.println("Please enter slot number: ");
+//            int slotNum = parseInt(scanner.next()) - 1;
+//            Slot slot = inventory.getNthSlot(slotNum);
+//            if (slot instanceof EmptySlot) {
+//                System.out.println("This slot is empty.");
+//            } else {
+//                System.out.println("Item name: " + slot.getName());
+//                System.out.println("Item ID: " + slot.getItemID());
+//                System.out.println("Item amount: " + slot.getStackCount());
+//                System.out.println("Max stack size: " + slot.getMaxStackSize());
+//            }
+//        } catch (IndexOutOfBoundsException e) {
+//            System.out.println("Invalid slot number.");
+//        }
+//    }
+//
+//    // MODIFIES: inventory.itemBank
+//    // EFFECTS: prompts user and creates a new item
+//    private void doCreateItem(Inventory inventory) {
+//        System.out.println("Please enter the item's name: ");
+//        String name = scanner.next();
+//        System.out.println("Please enter the item's maximum stack count: ");
+//        int maxStack = parseInt(scanner.next());
+//        System.out.println(inventory.createItem(name, maxStack));
+//        System.out.println("Item successfully created.");
+//    }
+//
+//    // EFFECTS: saves current inventory to a save slot
+//    // Based on https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo in WorkRoomApp.saveWorkRoom
+//    private void doSave() throws InvalidSaveSlotException {
+//        System.out.println("Select save slot: [1] [2] [3]");
+//        int saveSlotNum = parseInt(scanner.next());
+//        switch (saveSlotNum) {
+//            case 1:
+//                this.jsonWriter = new JsonWriter(JSON_STORE1);
+//                break;
+//            case 2:
+//                this.jsonWriter = new JsonWriter(JSON_STORE2);
+//                break;
+//            case 3:
+//                this.jsonWriter = new JsonWriter(JSON_STORE3);
+//                break;
+//            default:
+//                throw new InvalidSaveSlotException();
+//        }
+//        try {
+//            jsonWriter.open();
+//            jsonWriter.write(inventory);
+//            jsonWriter.close();
+//            System.out.println("Saved current inventory to slot " + saveSlotNum + ".");
+//        } catch (FileNotFoundException e) {
+//            System.out.println("Unable to write to file to slot " + saveSlotNum + ".");
+//        }
+//    }
+//
+//    // EFFECTS: load inventory from a save slot
+//    // Based on https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo in WorkRoomApp.loadWorkRoom
+//    private void doLoad() throws InvalidSaveSlotException {
+//        System.out.println("Select save slot: [1] [2] [3]");
+//        int saveSlotNum = parseInt(scanner.next());
+//        switch (saveSlotNum) {
+//            case 1:
+//                this.jsonReader = new JsonReader(JSON_STORE1);
+//                break;
+//            case 2:
+//                this.jsonReader = new JsonReader(JSON_STORE2);
+//                break;
+//            case 3:
+//                this.jsonReader = new JsonReader(JSON_STORE3);
+//                break;
+//            default:
+//                throw new InvalidSaveSlotException();
+//        }
+//        try {
+//            inventory = jsonReader.read();
+//            System.out.println("Loaded inventory from slot " + saveSlotNum + ".");
+//        } catch (IOException e) {
+//            System.out.println("Unable to read from slot " + saveSlotNum + ".");
+//        }
+//    }
 }
