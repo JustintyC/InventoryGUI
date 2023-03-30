@@ -485,5 +485,27 @@ public class HandTest {
         assertEquals("Hand: [sword 1x]", testHand.handTextView());
     }
 
+    @Test
+    void testHandIsEmpty() {
+        assertTrue(testHand.isEmpty());
+
+        inventoryTest.insertItem(5, item1);
+        testHand.hold(inventoryTest, 5, 1);
+        assertFalse(testHand.isEmpty());
+    }
+
+    @Test
+    void testHandClearHand() {
+        inventoryTest.insertItem(5, item1);
+        inventoryTest.insertItem(5, item1);
+        inventoryTest.insertItem(5, item1);
+        inventoryTest.insertItem(5, item1);
+        testHand.hold(inventoryTest, 5, 4);
+        assertFalse(testHand.isEmpty());
+
+        testHand.clearHand();
+        assertTrue(testHand.isEmpty());
+    }
+
 
 }
