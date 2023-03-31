@@ -84,7 +84,6 @@ public class InventoryApp extends JFrame {
     // EFFECTS: sets up game screen (not the inventory GUI)
     private void gameScreenSetup() {
         gameScreen = new JDesktopPane() {
-            // Override the paintComponent method to set the background image
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -93,7 +92,7 @@ public class InventoryApp extends JFrame {
                     // background source: the incredible artistic skills of ChatGPT
                     g.drawImage(img, 0, 0, getWidth(), getHeight(), null);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    throw new RuntimeException();
                 }
             }
         };
