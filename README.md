@@ -24,7 +24,7 @@ on how to develop their own inventory system.
 
 TAs please grade the user stories marked with a *
 
-# Phase 3: Instructions for Grader
+### Phase 3: Instructions for Grader
 
 - You can generate the first required action related to adding Xs to a Y by pressing the "Add item" button on the 
 menubar, entering a number between 1 and 10 for the item ID, and pressing add
@@ -35,7 +35,7 @@ picks up the item) and left/right clicking on any open spot (or spot with the sa
 - You can reload the state of my application by pressing options, pressing load, and selecting a save slot
 
 
-# Phase 4: Task 2
+### Phase 4: Task 2
 
 Hand cleared
 
@@ -151,7 +151,7 @@ Stack count at slot 0 decreased by 4
 
 Hand cleared
 
-# Phase 4: Task 3
+### Phase 4: Task 3
 
 - Refactoring portions of my GUI into different classes would make it easier to read, debug, and improve. This would
 also allow me and others to understand how the GUI works just by looking at the UML diagram. For example, I can have
