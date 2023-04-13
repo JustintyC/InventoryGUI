@@ -151,4 +151,20 @@ Stack count at slot 0 decreased by 4
 
 Hand cleared
 
+# Phase 4: Task 3
+
+- Refactoring portions of my GUI into different classes would make it easier to read, debug, and improve. This would
+also allow me and others to understand how the GUI works just by looking at the UML diagram. For example, I can have
+different menus be separated into different classes such as InventoryGUI, SaveLoadScreen, and MenuBar.
+- I could define an abstract class/interface that is extended/implemented by Inventory and Hand to reduce
+code duplication. Methods that place/remove items from either object may be duplicates and can therefore be refactored
+out.
+- I could refactor out unnecessary code that checks for equality of two items by redefining equals for the Slot and 
+Item classes. This would remove the need for me to extract the item's ID from the item via a getter before performing 
+comparisons.
+- Applying design patterns learned in class (singleton and iterable in particular) would remove the need of extra pieces 
+of data that I made to compensate for the lack of such patterns. For example, being able to iterate over an Inventory
+object instead of needing a getter to return a list would greatly simplify code. Having a universal Inventory object 
+would also remove the need of passing the inventory I am working with into every class as a parameter.
+
 
