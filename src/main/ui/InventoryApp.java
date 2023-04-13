@@ -2,6 +2,7 @@ package ui;
 
 import exceptions.InvalidItemIDException;
 import model.*;
+import model.Event;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 import ui.uiexceptions.InvalidSaveSlotException;
@@ -11,6 +12,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -23,7 +26,7 @@ import java.util.Scanner;
 import static java.lang.Integer.parseInt;
 
 // inventory text UI that handles inputs and produces corresponding information
-public class InventoryApp extends JFrame {
+public class InventoryApp extends JFrame implements WindowListener {
     private Scanner scanner = new Scanner(System.in); // Scanner from B04-SimpleCalculatorStaterLecLab
     private Inventory inventory;
     private Hand hand;
@@ -77,6 +80,8 @@ public class InventoryApp extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         centerOnScreen();
         setVisible(true);
+
+        addWindowListener(this);
 
         inventoryGUI.pack();
     }
@@ -530,6 +535,43 @@ public class InventoryApp extends JFrame {
         inventory.getItemBank().add(new Item("Vodka", 8, 1));
         inventory.getItemBank().add(new Item("Keys", 9, 5));
         inventory.getItemBank().add(new Item("Suspicious Papers", 10, 20));
+    }
+
+    @Override
+    public void windowOpened(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+        for (Event event : EventLog.getInstance()) {
+            System.out.println(event.getDescription());
+        }
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+
     }
 
 //    // EFFECTS: Initiates an inventory from a video game with console-based user interaction

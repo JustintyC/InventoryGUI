@@ -32,8 +32,7 @@ public class Hand {
             if (amount > targetSize) {
                 return false;
             } else {
-                hand = new FilledSlot(targetName, targetID, amount, targetMaxSize);
-                inventory.removeItem(slotNum, amount);
+                holdIntoEmptyHand(inventory, slotNum, amount, targetName, targetID, targetMaxSize);
                 return true;
             }
         } else if (targetSlot.getStackCount() < amount
@@ -41,10 +40,26 @@ public class Hand {
                 || hand.getMaxStackSize() - hand.getStackCount() < amount) {
             return false;
         } else {
-            hand.increaseStackCount(amount);
-            inventory.removeItem(slotNum, amount);
+            holdIntoNonEmptyHand(inventory, slotNum, amount);
             return true;
         }
+    }
+
+    // REQUIRES: slotNum, amount are valid
+    // EFFECTS: handles case where an item is held from an empty hand
+    private void holdIntoNonEmptyHand(Inventory inventory, int slotNum, int amount) {
+        hand.increaseStackCount(amount);
+        inventory.removeItem(slotNum, amount);
+        EventLog.getInstance().logEvent(new Event(amount + " item(s) picked up at slot " + slotNum));
+    }
+
+    // REQUIRES: slotNum, amount, targetID, targetMaxSize are valid
+    // EFFECTS: handles case where an item is held from a non-empty hand
+    private void holdIntoEmptyHand(Inventory inventory, int slotNum, int amount,
+                                   String targetName, int targetID, int targetMaxSize) {
+        hand = new FilledSlot(targetName, targetID, amount, targetMaxSize);
+        inventory.removeItem(slotNum, amount);
+        EventLog.getInstance().logEvent(new Event(amount + " item(s) picked up at slot " + slotNum));
     }
 
     // REQUIRES: hand is holding an item, amount > 0
@@ -87,11 +102,11 @@ public class Hand {
         int targetMaxSize = targetSlot.getMaxStackSize();
         int targetSize = targetSlot.getStackCount();
 
-
         if (amount == hand.getStackCount()) {
             inventory.setSlot(slotNum, hand.getName(), hand.getItemID(),
                     hand.getStackCount(), hand.getMaxStackSize());
             hand = new FilledSlot(targetName, targetID, targetSize, targetMaxSize);
+            EventLog.getInstance().logEvent(new Event("Stack in hand swapped with stack in slot " + slotNum));
             return true;
         } else {
             return false;
@@ -108,6 +123,7 @@ public class Hand {
         if (hand.getStackCount() <= 0) {
             this.hand = blank;
         }
+        EventLog.getInstance().logEvent(new Event(amount + " item(s) taken from hand"));
         return true;
     }
 
@@ -123,6 +139,7 @@ public class Hand {
     // EFFECTS: clears hand
     public void clearHand() {
         hand = blank;
+        EventLog.getInstance().logEvent(new Event("Hand cleared"));
     }
 
     public Boolean isEmpty() {

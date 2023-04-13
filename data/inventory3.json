@@ -63,124 +63,124 @@
     ],
     "inventory": [
         {
-            "itemID": 7,
+            "itemID": 1,
             "stackCount": 1,
-            "maxStackSize": 5,
-            "name": "Credit Card"
+            "maxStackSize": 1,
+            "name": "UBC Card"
         },
         {
-            "itemID": 7,
-            "stackCount": 1,
-            "maxStackSize": 5,
-            "name": "Credit Card"
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
         },
         {
-            "itemID": 7,
-            "stackCount": 1,
-            "maxStackSize": 5,
-            "name": "Credit Card"
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
         },
         {
-            "itemID": 7,
+            "itemID": 4,
             "stackCount": 1,
-            "maxStackSize": 5,
-            "name": "Credit Card"
+            "maxStackSize": 1,
+            "name": "Sensible Footwear"
         },
         {
-            "itemID": 7,
+            "itemID": 5,
             "stackCount": 1,
-            "maxStackSize": 5,
-            "name": "Credit Card"
+            "maxStackSize": 1,
+            "name": "Laptop"
         },
         {
-            "itemID": 7,
-            "stackCount": 1,
-            "maxStackSize": 5,
-            "name": "Credit Card"
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
         },
         {
-            "itemID": 7,
-            "stackCount": 1,
-            "maxStackSize": 5,
-            "name": "Credit Card"
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
         },
         {
-            "itemID": 7,
-            "stackCount": 1,
-            "maxStackSize": 5,
-            "name": "Credit Card"
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
         },
         {
-            "itemID": 7,
-            "stackCount": 1,
-            "maxStackSize": 5,
-            "name": "Credit Card"
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
         },
         {
-            "itemID": 7,
-            "stackCount": 1,
-            "maxStackSize": 5,
-            "name": "Credit Card"
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
         },
         {
-            "itemID": 7,
+            "itemID": 2,
             "stackCount": 1,
-            "maxStackSize": 5,
-            "name": "Credit Card"
+            "maxStackSize": 20,
+            "name": "Pencil"
         },
         {
-            "itemID": 7,
+            "itemID": 3,
             "stackCount": 1,
-            "maxStackSize": 5,
-            "name": "Credit Card"
+            "maxStackSize": 10,
+            "name": "Ball"
         },
         {
-            "itemID": 7,
+            "itemID": 10,
             "stackCount": 1,
-            "maxStackSize": 5,
-            "name": "Credit Card"
+            "maxStackSize": 20,
+            "name": "Suspicious Papers"
         },
         {
-            "itemID": 7,
+            "itemID": 10,
             "stackCount": 1,
-            "maxStackSize": 5,
-            "name": "Credit Card"
+            "maxStackSize": 20,
+            "name": "Suspicious Papers"
         },
         {
-            "itemID": 7,
-            "stackCount": 1,
-            "maxStackSize": 5,
-            "name": "Credit Card"
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
         },
         {
-            "itemID": 7,
-            "stackCount": 1,
-            "maxStackSize": 5,
-            "name": "Credit Card"
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
         },
         {
-            "itemID": 7,
-            "stackCount": 1,
-            "maxStackSize": 5,
-            "name": "Credit Card"
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
         },
         {
-            "itemID": 7,
-            "stackCount": 1,
-            "maxStackSize": 5,
-            "name": "Credit Card"
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
         },
         {
-            "itemID": 7,
-            "stackCount": 1,
-            "maxStackSize": 5,
-            "name": "Credit Card"
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
         },
         {
-            "itemID": 7,
-            "stackCount": 1,
-            "maxStackSize": 5,
-            "name": "Credit Card"
+            "itemID": -1,
+            "stackCount": -1,
+            "maxStackSize": -1,
+            "name": " "
         }
     ]
 }

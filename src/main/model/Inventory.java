@@ -47,6 +47,8 @@ public class Inventory implements Writable {
         if (currentSlot instanceof EmptySlot) { // (1)
             Slot newFilledSlot = new FilledSlot(itemName, itemID, stackCount, maxStackSize);
             inventory.set(slotNumber, newFilledSlot);
+            EventLog.getInstance().logEvent(new Event("Stack count at slot " + slotNumber + " increased by "
+                    + insertAmount));
             return true;
         } else if (currentSlot.getItemID() != item.getItemID()) { // (2)
             return false;
@@ -54,6 +56,8 @@ public class Inventory implements Writable {
             return false;
         } else { // (4)
             inventory.get(slotNumber).increaseStackCount(insertAmount);
+            EventLog.getInstance().logEvent(new Event("Stack count at slot " + slotNumber + " increased by "
+                    + insertAmount));
             return true;
         }
     }
@@ -79,6 +83,8 @@ public class Inventory implements Writable {
             if (currentSlot.getStackCount() == 0) {
                 inventory.set(slotNumber, blank);
             }
+            EventLog.getInstance().logEvent(new Event("Stack count at slot " + slotNumber + " decreased by "
+                    + amount));
             return true;
         }
     }
@@ -137,6 +143,7 @@ public class Inventory implements Writable {
             }
             slotNum++;
         }
+        EventLog.getInstance().logEvent(new Event("Inventory organized"));
     }
 
     // MODIFIES: this
