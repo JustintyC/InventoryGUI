@@ -65,7 +65,6 @@ public class InventoryApp extends JFrame implements WindowListener {
     }
 
     // EFFECTS: Initializes GUI
-    // Based on https://github.students.cs.ubc.ca/CPSC210/AlarmSystem
     private void runGUI() {
         gameScreenSetup();
         setContentPane(gameScreen);
@@ -515,7 +514,6 @@ public class InventoryApp extends JFrame implements WindowListener {
 
 
     // EFFECTS: Helper to center main application window on desktop
-    // Based on https://github.students.cs.ubc.ca/CPSC210/AlarmSystem
     private void centerOnScreen() {
         int width = Toolkit.getDefaultToolkit().getScreenSize().width;
         int height = Toolkit.getDefaultToolkit().getScreenSize().height;
@@ -758,7 +756,6 @@ public class InventoryApp extends JFrame implements WindowListener {
 //    }
 //
 //    // EFFECTS: saves current inventory to a save slot
-//    // Based on https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo in WorkRoomApp.saveWorkRoom
 //    private void doSave() throws InvalidSaveSlotException {
 //        System.out.println("Select save slot: [1] [2] [3]");
 //        int saveSlotNum = parseInt(scanner.next());
@@ -786,7 +783,6 @@ public class InventoryApp extends JFrame implements WindowListener {
 //    }
 //
 //    // EFFECTS: load inventory from a save slot
-//    // Based on https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo in WorkRoomApp.loadWorkRoom
 //    private void doLoad() throws InvalidSaveSlotException {
 //        System.out.println("Select save slot: [1] [2] [3]");
 //        int saveSlotNum = parseInt(scanner.next());

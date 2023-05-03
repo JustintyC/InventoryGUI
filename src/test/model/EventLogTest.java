@@ -9,10 +9,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Unit tests for the EventLog class
- */
-// Based on https://github.students.cs.ubc.ca/CPSC210/AlarmSystem
 public class EventLogTest {
 	private Event e1;
 	private Event e2;
@@ -48,7 +44,7 @@ public class EventLogTest {
 		EventLog el = EventLog.getInstance();
 		el.clear();
 		Iterator<Event> itr = el.iterator();
-		assertTrue(itr.hasNext());   // After log is cleared, the clear log event is added
+		assertTrue(itr.hasNext());
 		assertEquals("Event log cleared.", itr.next().getDescription());
 		assertFalse(itr.hasNext());
 	}

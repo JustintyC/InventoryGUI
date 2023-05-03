@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class InventoryTest {
 
-    //private int inventorySize = Inventory.inventorySize;
     Inventory inventoryTest;
     Item item1;
     Item item2;
